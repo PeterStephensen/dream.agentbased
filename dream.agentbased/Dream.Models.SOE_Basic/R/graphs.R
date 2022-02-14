@@ -323,36 +323,41 @@ plot(dd$Age/12, dd$Productivity,pch=19, cex=0.1, xlab="Age (years)", ylab="Produ
 #par(mfrow=c(1,1))
 
 #-----------------------------------------------
-par(mfrow=c(3,1))
-z = (d$nFirmCloseNegativeProfit + d$nFirmCloseNatural + d$nFirmCloseTooBig) / (12*d$nFirms)
-  
-mx = max(max(z), max(d$nFirmNew / (12*d$nFirms)))
-plot(d$Year, z, xlab = "year", ylab="Flow of firms", ylim=c(0, 1.1*mx), 
-     type="l", xlim=c(y0,mx_yr), main="", cex.main=0.7)
-lines(d$Year, d$nFirmCloseNatural / (12*d$nFirms), col=cols[2], type="l")
-lines(d$Year, d$nFirmCloseTooBig / (12*d$nFirms), col=cols[3], type="s")
-abline(h=120, lty=2)
-lines(d$Year, d$nFirmNew / (12*d$nFirms), col=cols[4], type="l")
-abline(h=0)
-abline(v=burnIn, lty=2)
-abline(v=2050, lty=2)
-ContourFunctions::multicolor.title(c("Closed:Total  ","Closed:Natural  ", "Closed:TooBig  ", "New"), 1:4, cex.main = 0.7)
+par(mfrow=c(2,2))
 
+#z = (d$nFirmCloseNegativeProfit + d$nFirmCloseNatural + d$nFirmCloseTooBig) / (12*d$nFirms)
+  
+#mx = max(max(z), max(d$nFirmNew / (12*d$nFirms)))
+#plot(d$Year, z, xlab = "year", ylab="Flow of firms", ylim=c(0, 1.1*mx), 
+#     type="l", xlim=c(y0,mx_yr), main="", cex.main=0.7)
+#lines(d$Year, d$nFirmCloseNatural / (12*d$nFirms), col=cols[2], type="l")
+#lines(d$Year, d$nFirmCloseTooBig / (12*d$nFirms), col=cols[3], type="s")
+#abline(h=120, lty=2)
+#lines(d$Year, d$nFirmNew / (12*d$nFirms), col=cols[4], type="l")
+#abline(h=0)
+#abline(v=burnIn, lty=2)
+#abline(v=2050, lty=2)
+#ContourFunctions::multicolor.title(c("Closed:Total  ","Closed:Natural  ", "Closed:TooBig  ", "New"), 1:4, cex.main = 0.7)
 
 if(d$Year[1]>2050 & length(d$Year)>50)
 {
   z = (length(d$Year)-50):length(d$Year)
 
   hp = hpfilter(d$YearConsumption)
-  mx = max(d$YearConsumption[z]) 
-  plot(d$Year[z], d$YearConsumption[z], type="l", ylab="Consumption per year", xlab="Year") #, ylim=c(0, 1.1*mx)
+  plot(d$Year[z], d$YearConsumption[z], type="l", ylab="Consumption per year", xlab="Year") 
   lines(d$Year[z], hp[z], lty=2)
+
+  plot(d$Year[z], d$YearConsumption[z]/hp[z], type="l", ylab="Consumption per year", xlab="Year")
+  abline(h=1, lty=2)
   
   hp = hpfilter(d$YearEmployment)
-  mx = max(d$YearEmployment[z]) 
-  plot(d$Year[z], d$YearEmployment[z], type="l", ylab="Employment per year", xlab="Year") #, ylim=c(0, 1.1*mx)
+  plot(d$Year[z], d$YearEmployment[z], type="l", ylab="Employment per year", xlab="Year")
   lines(d$Year[z], hp[z], lty=2)
+
+  plot(d$Year[z], d$YearEmployment[z]/hp[z], type="l", ylab="Employment per year", xlab="Year") 
+  abline(h=1, lty=2)
   
+    
 }else
 {
   
