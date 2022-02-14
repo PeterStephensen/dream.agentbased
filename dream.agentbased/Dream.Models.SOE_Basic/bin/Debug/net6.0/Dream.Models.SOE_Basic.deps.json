@@ -1,0 +1,47 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "Dream.Models.SOE_Basic/1.0.0": {
+        "dependencies": {
+          "Dream.AgentClass": "1.0.0",
+          "Dream.IO": "1.0.0"
+        },
+        "runtime": {
+          "Dream.Models.SOE_Basic.dll": {}
+        }
+      },
+      "Dream.AgentClass/1.0.0": {
+        "runtime": {
+          "Dream.AgentClass.dll": {}
+        }
+      },
+      "Dream.IO/1.0.0": {
+        "runtime": {
+          "Dream.IO.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Dream.Models.SOE_Basic/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Dream.AgentClass/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Dream.IO/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "version": 3,
+  "targets": {
+    "net6.0": {
+      "Dream.AgentClass/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/Dream.AgentClass.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Dream.AgentClass.dll": {}
+        }
+      },
+      "Dream.IO/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/Dream.IO.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Dream.IO.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Dream.AgentClass/1.0.0": {
+      "type": "project",
+      "path": "../Dream.AgentClass/Dream.AgentClass.csproj",
+      "msbuildProject": "../Dream.AgentClass/Dream.AgentClass.csproj"
+    },
+    "Dream.IO/1.0.0": {
+      "type": "project",
+      "path": "../Dream.IO/Dream.IO.csproj",
+      "msbuildProject": "../Dream.IO/Dream.IO.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net6.0": [
+      "Dream.AgentClass >= 1.0.0",
+      "Dream.IO >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\B007566\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "H:\\CSharp\\Agentbased2\\dream.agentbased\\Dream.Models.SOE_Basic\\Dream.Models.SOE_Basic.csproj",
+      "projectName": "Dream.Models.SOE_Basic",
+      "projectPath": "H:\\CSharp\\Agentbased2\\dream.agentbased\\Dream.Models.SOE_Basic\\Dream.Models.SOE_Basic.csproj",
+      "packagesPath": "C:\\Users\\B007566\\.nuget\\packages\\",
+      "outputPath": "H:\\CSharp\\Agentbased2\\dream.agentbased\\Dream.Models.SOE_Basic\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\B007566\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net6.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "projectReferences": {
+            "H:\\CSharp\\Agentbased2\\dream.agentbased\\Dream.AgentClass\\Dream.AgentClass.csproj": {
+              "projectPath": "H:\\CSharp\\Agentbased2\\dream.agentbased\\Dream.AgentClass\\Dream.AgentClass.csproj"
+            },
+            "H:\\CSharp\\Agentbased2\\dream.agentbased\\Dream.IO\\Dream.IO.csproj": {
+              "projectPath": "H:\\CSharp\\Agentbased2\\dream.agentbased\\Dream.IO\\Dream.IO.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net6.0": {
+        "targetAlias": "net6.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}
