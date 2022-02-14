@@ -99,7 +99,7 @@ namespace Dream.Models.SOE_Basic
                       
             // Time and randomseed           
             settings.StartYear = 2014;
-            settings.EndYear = 2377;
+            settings.EndYear = 2378;
             settings.PeriodsPerYear = 12;
 
             settings.StatisticsOutputPeriode = (2075 - 2014) * 12;
