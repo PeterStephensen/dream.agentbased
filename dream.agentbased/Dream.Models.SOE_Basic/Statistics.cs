@@ -95,7 +95,7 @@ namespace Dream.Models.SOE_Basic
                     path = _settings.ROutputDir + "\\household_reports.txt";
                     if (File.Exists(path)) File.Delete(path);
                     _fileHouseholdReport = File.CreateText(path);
-                    _fileHouseholdReport.WriteLine("Time\tID\tProductivity\tAge\tConsumption");
+                    _fileHouseholdReport.WriteLine("Time\tID\tProductivity\tAge\tConsumption\tValConsumption\tIncome");
 
                     path = _settings.ROutputDir + "\\output.txt";
                     if (!File.Exists(path))
@@ -343,7 +343,6 @@ namespace Dream.Models.SOE_Basic
             }
         }
         #endregion
-        //                        _fileDBStatistics.WriteLine("expSharpeRatio\tmacroProductivity\tmarketPrice\tmarketWage");
 
         #region Write()
         void Write()
@@ -352,7 +351,6 @@ namespace Dream.Models.SOE_Basic
 
         }
         #endregion
-
 
         #region RunRScript()
         void RunRScript(string fileName)

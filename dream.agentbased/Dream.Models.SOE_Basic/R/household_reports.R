@@ -34,11 +34,11 @@ dec = function(x,n=3)
 }
 
 
-par(mfrow=c(2,1))
+par(mfrow=c(3,1))
 
 for(i in 1:n)
 {
-  #i=36
+  #i=236
   dr = d_report %>% filter(ID==ids[i])
   
 
@@ -48,9 +48,19 @@ for(i in 1:n)
   
   mx = max(dr$Consumption)
   mn = min(dr$Consumption)
-  plot(dr$Age/12, dr$Consumption, type="l", xlab="Age", ylab="Consumption", ylim=c(mn, 1.1*mx))
+  if(mn<0) mn=0
+  plot(dr$Age/12, dr$Consumption, type="s", xlab="Age", ylab="Consumption", ylim=c(mn, 1.1*mx))
   abline(h=0)
+
+  z = dr$ValConsumption/dr$Income
+  mx = max(z)
+  mn = min(z)
+  #plot(dr$Age/12, dr$ValConsumption/dr$Income, type="l", xlab="Age", ylab="vC / income", ylim=c(mn, 1.1*mx))
+  plot(dr$Age/12, dr$ValConsumption/dr$Income, type="s", xlab="Age", ylab="vC / income", ylim=c(0, 1.1))
+  #abline(h=0)
+  #abline(h=1)
   
+    
 }
 
 dev.off()

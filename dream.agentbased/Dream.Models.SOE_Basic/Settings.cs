@@ -163,7 +163,7 @@ namespace Dream.Models.SOE_Basic
         /// </summary>
         public int HouseholdNumberFirmsSearchJob = 10;
         public int HouseholdNumberFirmsSearchShop = 5;
-        public int HouseholdMaxNumberShops = 10;
+        public int HouseholdMaxNumberShops = 5;
         public double HouseholdProbabilityQuitJob = 0;
         public double HouseholdProbabilitySearchForJob = 0;
         public double HouseholdProbabilitySearchForShop = 0.01;
@@ -193,6 +193,11 @@ namespace Dream.Models.SOE_Basic
         /// The share of firms that is randomly picked to report monthly data 
         /// </summary>
         public double StatisticsFirmReportSampleSize = 0.0;
+
+        /// <summary>
+        /// The share of households that is randomly picked to report monthly data 
+        /// </summary>
+        public double StatisticsHouseholdReportSampleSize = 0.0;
 
         /// <summary>
         /// If this is x, graphics is plottet every x periods

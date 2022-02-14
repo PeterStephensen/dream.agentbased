@@ -30,10 +30,10 @@ namespace Dream.Models.SOE_Basic
         bool _startFromDatabase = false;
         bool _report = false;
         double _consumption = 0;
+        double _vConsumption = 0; // Value of consumption
         double _income = 0;
-
+        double _year;
         #endregion
-
 
         #region Constructors
         public Household()
@@ -47,6 +47,10 @@ namespace Dream.Models.SOE_Basic
             
             _productivity = 1;
             _age = _settings.HouseholdStartAge;
+
+            if (_random.NextEvent(_settings.StatisticsHouseholdReportSampleSize))
+                _report = true;
+
 
         }
         public Household(TabFileReader file) : this()
@@ -69,8 +73,6 @@ namespace Dream.Models.SOE_Basic
 
             _startFromDatabase = true;
             
-            if(_random.NextEvent(0.02))
-                _report = true;
 
         }
         #endregion
@@ -94,7 +96,10 @@ namespace Dream.Models.SOE_Basic
                     }
                     break;
 
-                case Event.System.PeriodStart:                    
+                case Event.System.PeriodStart:
+                    _year = _settings.StartYear + 1.0 * _time.Now / _settings.PeriodsPerYear;
+                    ReportToStatistics();
+
                     _unemp = _firmEmployment == null;
                     _w = _unemp ? 0.0 : _firmEmployment.Wage;
                     _unempDuration = _unemp ? _unempDuration + 1 : 0;
@@ -113,7 +118,6 @@ namespace Dream.Models.SOE_Basic
 
                     _income = _w * _productivity + _simulation.Statistics.PublicProfitPerHousehold;
                     
-                    ReportToStatistics();
 
                     break;
 
@@ -147,7 +151,7 @@ namespace Dream.Models.SOE_Basic
                     if (_random.NextEvent(_settings.HouseholdProbabilitySearchForShop))
                         SearchForShop();
 
-                    _consumption = BuyFromShop();
+                    BuyFromShop();
                     _yr_consumption += _consumption;
                     break;
 
@@ -185,7 +189,53 @@ namespace Dream.Models.SOE_Basic
 
         #region Internal methods
         #region BuyFromShop()
-        double BuyFromShop()
+        void BuyFromShop()
+        {
+            if (_firmShop == null)
+                _firmShop = _simulation.GetRandomFirm(); //SearchForShop ???????????????????????
+
+           if(_income<0)
+            {
+                _vConsumption = 0;
+                _consumption = 0;
+                return;
+            }
+
+            if (_firmShop.Communicate(ECommunicate.CanIBuy, _income / _firmShop.Price) == ECommunicate.Yes)
+            {
+                _vConsumption = _income;
+                _consumption = _income / _firmShop.Price;
+                return;
+            }
+            else
+            {
+                List<Firm> firms = _simulation.GetRandomFirms(_settings.HouseholdMaxNumberShops);
+                firms = firms.OrderBy(x => x.Price).ToList(); // Order by price. Lowest price first
+
+                foreach(Firm f in firms)
+                {
+                    if (f.Communicate(ECommunicate.CanIBuy, _income / f.Price) == ECommunicate.Yes)
+                    {
+                        _firmShop = f;
+                        _vConsumption = _income;
+                        _consumption = _income / _firmShop.Price;
+                        return;
+                    }
+
+                }
+
+                //_firmShop = null;
+                _vConsumption = 0;
+                _consumption = 0;
+                return;
+
+            }
+
+
+        }
+
+
+        void BuyFromShop2()
         {
 
             if (_firmShop == null)
@@ -198,7 +248,9 @@ namespace Dream.Models.SOE_Basic
             if (budget > 0)
                 while(_firmShop.Communicate(ECommunicate.CanIBuy, budget / _firmShop.Price)!=ECommunicate.Yes)
                 {
+                    _firmShop = null;
                     SearchForShop();
+                    //_firmShop = _simulation.GetRandomFirm();
                     i++;
                     if (i > _settings.HouseholdMaxNumberShops)
                     {
@@ -207,7 +259,9 @@ namespace Dream.Models.SOE_Basic
                     }
                 }
             
-            return foundFirm ? budget / _firmShop.Price : 0.0;
+            _consumption = foundFirm ? budget / _firmShop.Price : 0.0;
+            _vConsumption = foundFirm ? budget : 0.0;
+
         }
         #endregion
 
@@ -262,8 +316,7 @@ namespace Dream.Models.SOE_Basic
             if (_report)
             {
                 
-                _statistics.StreamWriterHouseholdReport.WriteLineTab(_settings.StartYear + 1.0 * _time.Now / _settings.PeriodsPerYear, 
-                    this.ID, _productivity, _age, _consumption);
+                _statistics.StreamWriterHouseholdReport.WriteLineTab(_year, this.ID, _productivity, _age, _consumption, _vConsumption, _income);
 
                 _statistics.StreamWriterHouseholdReport.Flush();
 

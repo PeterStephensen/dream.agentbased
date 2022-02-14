@@ -163,7 +163,7 @@ namespace Dream.Models.SOE_Basic
                     {
 
                         if (_time.Now < _settings.BurnInPeriod2)
-                            _nFirmNew = 10*1;// 37;
+                            _nFirmNew = 20*1;// 37;
                         else
                         {
                             _nFirmNew += 0.50 * _statistics.PublicExpectedSharpRatio;

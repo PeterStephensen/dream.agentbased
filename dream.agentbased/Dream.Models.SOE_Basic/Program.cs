@@ -82,6 +82,7 @@ namespace Dream.Models.SOE_Basic
             settings.StatisticsInitialInterestRate = Math.Pow(1 + 0.05, 1.0 / 12) - 1; // 5% p.a.
 
             settings.StatisticsFirmReportSampleSize = 0.15;
+            settings.StatisticsHouseholdReportSampleSize = 0.02;
             settings.StatisticsExpectedSharpeRatioSmooth = 0.7;
 
             // R-stuff
