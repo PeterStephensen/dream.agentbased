@@ -9,8 +9,10 @@ namespace Dream.Models.SOE_Basic
 
             Settings settings = new Settings();
 
+            double scale = 1.0;
+            
             //Firms
-            settings.NumberOfFirms = 300*1;
+            settings.NumberOfFirms = (int)(300 * scale);
 
             settings.FirmParetoMinPhi = 0.5; 
             settings.FirmPareto_k = 2.5;  // k * (1 - alpha) > 1     
@@ -74,13 +76,13 @@ namespace Dream.Models.SOE_Basic
             settings.HouseholdProductivityLogSigmaInitial = 0.6;
             settings.HouseholdProductivityLogMeanInitial = -0.5 * Math.Pow(settings.HouseholdProductivityLogSigmaInitial, 2); // Sikrer at forventet produktivitet er 1
             settings.HouseholdProductivityErrorSigma = 0.02;
-            settings.HouseholdNewBorn = 15;
+            settings.HouseholdNewBorn = (int)(15 * scale);
             
             settings.HouseholdPensionAge = 67 * 12;
             settings.HouseholdStartAge = 18 * 12;
 
             // Investor
-            settings.InvestorInitialInflow = 17;
+            settings.InvestorInitialInflow = (int)(17 * scale);
             settings.InvestorProfitSensitivity = 0.5;            
             
             // Statistics

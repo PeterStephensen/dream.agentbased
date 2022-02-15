@@ -228,8 +228,7 @@ namespace Dream.Models.SOE_Basic
         void Write()
         {
 
-            _statistics.StreamWriterDBFirms.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}", 
-                ID, _age, _phi0, _expPrice, _expWage, _expQuitters, 
+            _statistics.StreamWriterDBFirms.WriteLineTab(ID, _age, _phi0, _expPrice, _expWage, _expQuitters, 
                 _expApplications, _expPotentialSales, _expSales, _w, _p, _sales, _profit);
 
 
@@ -378,7 +377,7 @@ namespace Dream.Models.SOE_Basic
             _vacancies = 0;
             if (_l_optimal > l)
             {
-                double gamma = _age > _settings.FirmStartupPeriod ? 0.7 : 1.0;
+                double gamma = _age > _settings.FirmStartupPeriod ? 0.25 : 1.0; // Kik mere på 0.25!!!!!!!!!!!!!!!!!
                 
                 if(_l_optimal - l <= 5)
                     _vacancies = _l_optimal - l;
@@ -408,6 +407,7 @@ namespace Dream.Models.SOE_Basic
                 double w_target = _expWage;
                 //_w = _expWage;
 
+                //if(_age > _settings.FirmStartupPeriod)
                 if (_vacancies > 0)
                 {
                     if (_expApplications < _vacancies + _expQuitters)
@@ -464,7 +464,7 @@ namespace Dream.Models.SOE_Basic
 
         #region CalcEmployment()
         /// <summary>
-        /// Calculate employment as sum over productivities
+        /// Calculate employment as sum over productivities. Do not use too often!!!
         /// </summary>
         /// <returns>Employment measured in productivity units</returns>
         double CalcEmployment()

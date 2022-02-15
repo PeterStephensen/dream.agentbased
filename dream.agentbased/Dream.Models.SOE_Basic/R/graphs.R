@@ -1,5 +1,7 @@
 rm(list=ls())
+#install.packages("forecast")
 library(dplyr)
+library(forecast)
 
 if(Sys.info()['nodename'] == "C1709161")    # PSP's machine
 {
@@ -350,18 +352,22 @@ if(d$Year[1]>2050 & length(d$Year)>50)
 {
   z = (length(d$Year)-50):length(d$Year)
 
+  fit = as.character(auto.arima(d$YearConsumption))
   hp = hpfilter(d$YearConsumption)
-  plot(d$Year[z], d$YearConsumption[z], type="l", ylab="Consumption per year", xlab="Year") 
+  plot(d$Year[z], d$YearConsumption[z], type="b", ylab="Consumption per year", xlab="Year", main=fit, cex=0.5, pch=20) 
   lines(d$Year[z], hp[z], lty=2)
 
-  plot(d$Year[z], d$YearConsumption[z]/hp[z], type="l", ylab="Consumption per year", xlab="Year")
+  fit = as.character(auto.arima(d$YearConsumption[z]/hp[z]))
+  plot(d$Year[z], d$YearConsumption[z]/hp[z], type="b", ylab="Consumption per year", xlab="Year", main=fit, cex=0.5, pch=20)
   abline(h=1, lty=2)
   
+  fit = as.character(auto.arima(d$YearEmployment))
   hp = hpfilter(d$YearEmployment)
-  plot(d$Year[z], d$YearEmployment[z], type="l", ylab="Employment per year", xlab="Year")
+  plot(d$Year[z], d$YearEmployment[z], type="b", ylab="Employment per year", xlab="Year", main=fit, cex=0.5, pch=20)
   lines(d$Year[z], hp[z], lty=2)
 
-  plot(d$Year[z], d$YearEmployment[z]/hp[z], type="l", ylab="Employment per year", xlab="Year") 
+  fit = as.character(auto.arima(d$YearEmployment[z]/hp[z]))
+  plot(d$Year[z], d$YearEmployment[z]/hp[z], type="b", ylab="Employment per year", xlab="Year", main=fit, cex=0.5, pch=20) 
   abline(h=1, lty=2)
   
     

@@ -51,11 +51,11 @@ for(i in 1:n)
       next
   }
   
-  if(F)
+  if(T)
   {
-    if(nrow(dr)>12*5)
+    if(nrow(dr)>12*3)
     {
-      dr = dr[1:(12*5),]
+      dr = dr[1:(12*3),]
     }
     
   }
