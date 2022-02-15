@@ -42,7 +42,7 @@ namespace Dream.Models.SOE_Basic
         int _age = 0;
         bool _report = false;
         bool _startFromDatabase = false;
-        //double _rest = 0;
+        double _year = 0;
         #endregion
 
         #region Constructors
@@ -104,6 +104,9 @@ namespace Dream.Models.SOE_Basic
                     break;
 
                 case Event.System.PeriodStart:
+                    _year = 1.0 * _settings.StartYear + 1.0 * _time.Now / _settings.PeriodsPerYear;
+                    ReportToStatistics();
+
                     _phi = _phi0 * _statistics.PublicProductivity;
                     _l_primo = CalcEmployment(); // Primo employment
                     _s_primo = _sales;
@@ -113,7 +116,6 @@ namespace Dream.Models.SOE_Basic
                     Management();
                     Marketing();
                     HumanResource();
-                    ReportToStatistics();
 
                     // Initialize
                     _jobApplications = 0;
@@ -437,8 +439,7 @@ namespace Dream.Models.SOE_Basic
         {
             if (_report)
             {
-                _statistics.StreamWriterFirmReport.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}\t{15}\t{16}\t{17}\t{18}",
-                    1.0 * _settings.StartYear + 1.0 * _time.Now / _settings.PeriodsPerYear, this.ID, _phi, _l_primo, _y_primo, _s_primo, 
+                _statistics.StreamWriterFirmReport.WriteLineTab(_year, ID, _phi, _l_primo, _y_primo, _s_primo, 
                     _v_primo, _expPrice, _expWage, _p, _w, _jobApplications, _jobQuitters, _profit, _value, _potentialSales, _l_optimal, _y_optimal, _expSales);
 
                 _statistics.StreamWriterFirmReport.Flush();

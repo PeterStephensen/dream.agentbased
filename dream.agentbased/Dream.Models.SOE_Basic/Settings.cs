@@ -217,6 +217,9 @@ namespace Dream.Models.SOE_Basic
         /// </summary>
         public int StatisticsGraphicsPlotInterval = 0;
 
+        public int StatisticsGraphicsStartPeriod = 0;
+
+
         public int StatisticsOutputPeriode = -1;
 
         public double StatisticsExpectedSharpeRatioSmooth = 0.0;

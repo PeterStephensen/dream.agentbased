@@ -212,7 +212,7 @@ namespace Dream.Models.SOE_Basic
 
 
                     // Graphics
-                    if (_settings.StatisticsGraphicsPlotInterval > 0)
+                    if (_settings.StatisticsGraphicsPlotInterval > 0 & (_time.Now > _settings.StatisticsGraphicsStartPeriod))
                         if (_time.Now % _settings.StatisticsGraphicsPlotInterval == 0) // Once a year
                         {
                             double tot_opt_l = 0;// Calculate total optimal employment  

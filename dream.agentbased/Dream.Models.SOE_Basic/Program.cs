@@ -9,7 +9,7 @@ namespace Dream.Models.SOE_Basic
 
             Settings settings = new Settings();
 
-            double scale = 1.0;
+            double scale = 1.0; // Scale the model up and down
             
             //Firms
             settings.NumberOfFirms = (int)(300 * scale);
@@ -24,7 +24,7 @@ namespace Dream.Models.SOE_Basic
             double mark = 0.02;
             double sens = 2.0;
 
-            settings.FirmWageMarkup = 2*mark; 
+            settings.FirmWageMarkup = 2 * mark; 
             settings.FirmWageMarkupSensitivity = sens;
             settings.FirmWageMarkdown = 2 * mark; //0.07
             settings.FirmWageMarkdownSensitivity = sens;
@@ -91,6 +91,7 @@ namespace Dream.Models.SOE_Basic
 
             settings.StatisticsFirmReportSampleSize = 0.15;
             settings.StatisticsHouseholdReportSampleSize = 0.02;
+            
             settings.StatisticsExpectedSharpeRatioSmooth = 0.7;
 
             // R-stuff
@@ -113,6 +114,7 @@ namespace Dream.Models.SOE_Basic
 
             settings.StatisticsOutputPeriode = (2075 - 2014) * 12;
             settings.StatisticsGraphicsPlotInterval = 12 * 1;
+            settings.StatisticsGraphicsStartPeriod = 0;
 
             //settings.ShockPeriod = (2100 - 2014) * 12;
 
