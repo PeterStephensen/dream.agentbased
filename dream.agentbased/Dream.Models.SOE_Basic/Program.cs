@@ -17,31 +17,33 @@ namespace Dream.Models.SOE_Basic
 
             settings.FirmAlpha = 0.5;
             settings.FirmFi = 2;
-            
 
             //-----
-            settings.FirmWageMarkup = 0.05; 
-            settings.FirmWageMarkupSensitivity = 2.0;
-            settings.FirmWageMarkdown = 0.07;
-            settings.FirmWageMarkdownSensitivity = 2.0;
+            double mark = 0.02;
+            double sens = 2.0;
 
-            settings.FirmWageMarkupInZone = 0.05; //0.0----------------
-            settings.FirmWageMarkupSensitivityInZone = 2.0;
-            settings.FirmWageMarkdownInZone = 0.07; 
-            settings.FirmWageMarkdownSensitivityInZone = 2.0;
+            settings.FirmWageMarkup = 2*mark; 
+            settings.FirmWageMarkupSensitivity = sens;
+            settings.FirmWageMarkdown = 2 * mark; //0.07
+            settings.FirmWageMarkdownSensitivity = sens;
+
+            settings.FirmWageMarkupInZone = mark; 
+            settings.FirmWageMarkupSensitivityInZone = sens;
+            settings.FirmWageMarkdownInZone = mark;  //0.07 
+            settings.FirmWageMarkdownSensitivityInZone = sens;
 
             settings.FirmProbabilityRecalculateWage = 0.8;
             
             //-----
-            settings.FirmPriceMarkup = 0.08;
-            settings.FirmPriceMarkupSensitivity = 2.0;
-            settings.FirmPriceMarkdown = 0.05;  
-            settings.FirmPriceMarkdownSensitivity = 5.0; //2.0
+            settings.FirmPriceMarkup = 2 * mark;  // 0.08
+            settings.FirmPriceMarkupSensitivity = sens;
+            settings.FirmPriceMarkdown = 2 * mark;  
+            settings.FirmPriceMarkdownSensitivity = sens;  //5.0 
 
-            settings.FirmPriceMarkupInZone = 0.08;  //0.0---------------------------
-            settings.FirmPriceMarkupSensitivityInZone = 1.0;
-            settings.FirmPriceMarkdownInZone = 0.05;  //0.0
-            settings.FirmPriceMarkdownSensitivityInZone = 2.0; 
+            settings.FirmPriceMarkupInZone = mark;  // 0.08  
+            settings.FirmPriceMarkupSensitivityInZone = sens;  //1.0
+            settings.FirmPriceMarkdownInZone = mark;  
+            settings.FirmPriceMarkdownSensitivityInZone = sens; 
 
             settings.FirmPriceMechanismStart = 12 * 1;
             settings.FirmProbabilityRecalculatePrice = 0.8;
@@ -72,11 +74,15 @@ namespace Dream.Models.SOE_Basic
             settings.HouseholdProductivityLogSigmaInitial = 0.6;
             settings.HouseholdProductivityLogMeanInitial = -0.5 * Math.Pow(settings.HouseholdProductivityLogSigmaInitial, 2); // Sikrer at forventet produktivitet er 1
             settings.HouseholdProductivityErrorSigma = 0.02;
-
+            settings.HouseholdNewBorn = 15;
             
             settings.HouseholdPensionAge = 67 * 12;
             settings.HouseholdStartAge = 18 * 12;
 
+            // Investor
+            settings.InvestorInitialInflow = 17;
+            settings.InvestorProfitSensitivity = 0.5;            
+            
             // Statistics
             settings.StatisticsInitialMarketPrice = 2.0;
             settings.StatisticsInitialInterestRate = Math.Pow(1 + 0.05, 1.0 / 12) - 1; // 5% p.a.
@@ -115,6 +121,8 @@ namespace Dream.Models.SOE_Basic
             settings.BurnInPeriod1 = (2035 - 2014) * 12;
             settings.BurnInPeriod2 = (2050 - 2014) * 12;
             settings.StatisticsWritePeriode = (2075 - 2014) * 12;
+
+            // !!!!! Remember some settings are changed in Simulation after BurnIn1 !!!!!
 
             //settings.BurnInPeriod1 = 1;
             ////settings.BurnInPeriod2 = 112 * 5;

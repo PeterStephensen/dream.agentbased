@@ -145,8 +145,7 @@ namespace Dream.Models.SOE_Basic
                case Event.System.PeriodEnd:
                     base.EventProc(idEvent);
                     // New households
-                    int newHouseholds = 15*1;
-                    for (int i = 0; i < newHouseholds; i++)
+                    for (int i = 0; i < _settings.HouseholdNewBorn; i++)
                         _households += new Household();
 
                     
@@ -159,14 +158,15 @@ namespace Dream.Models.SOE_Basic
                         _settings.FirmStartupEmployment = 10;  //15
                     }
                     
+                    // Investor
                     if (_settings.FirmStartNewFirms)
                     {
 
                         if (_time.Now < _settings.BurnInPeriod2)
-                            _nFirmNew = 20*1;// 37;
+                            _nFirmNew = _settings.InvestorInitialInflow;
                         else
                         {
-                            _nFirmNew += 0.50 * _statistics.PublicExpectedSharpRatio;
+                            _nFirmNew += _settings.InvestorProfitSensitivity * _statistics.PublicExpectedSharpRatio;
                             if(_nFirmNew<0)
                                 _nFirmNew = 0;
 
@@ -180,7 +180,6 @@ namespace Dream.Models.SOE_Basic
 
                         }
                     }
-
                    
                     break;
 

@@ -170,6 +170,11 @@ namespace Dream.Models.SOE_Basic
         public int HouseholdPensionAge = 0;
         public int HouseholdStartAge = 0;
         /// <summary>
+        /// The number of new housholds each period
+        /// </summary>
+        public int HouseholdNewBorn = 0;
+
+        /// <summary>
         /// Mean in log-normal productivity distribution (initial population)
         /// </summary>
         public double HouseholdProductivityLogMeanInitial = 0.0;
@@ -181,6 +186,14 @@ namespace Dream.Models.SOE_Basic
         /// Standard deviation in error term in dynamic productivity equation
         /// </summary>
         public double HouseholdProductivityErrorSigma= 0;
+
+        /// <summary>
+        /// Initial size of investor firm portefolio
+        /// </summary>
+        public int InvestorInitialInflow = 0;
+
+        public double InvestorProfitSensitivity = 0;
+
 
         public double StatisticsInitialMarketPrice = 1.0;    
         public double StatisticsInitialMarketWage = 1.0;
