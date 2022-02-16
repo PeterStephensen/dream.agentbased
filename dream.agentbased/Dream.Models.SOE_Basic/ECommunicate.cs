@@ -45,4 +45,15 @@ namespace Dream.Models.SOE_Basic
     }
     #endregion
 
+    #region EShock
+    public enum EShock
+    {
+        Productivity,
+        Tsunami,
+        LaborSupply,
+        Nothing
+    }
+
+    #endregion
+
 }

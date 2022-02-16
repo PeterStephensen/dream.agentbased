@@ -235,9 +235,11 @@ namespace Dream.Models.SOE_Basic
         /// </summary>
         public int RandomSeed = -1;
 
+        public EShock ShockID = EShock.Nothing;
+        public int PeriodsPerYear = 1;
+
         public int StartYear = 0;
         public int EndYear = 10;
-        public int PeriodsPerYear = 1;
         public int ShockPeriod = -1;
         public int BurnInPeriod1 = -1;
         public int BurnInPeriod2 = -1;

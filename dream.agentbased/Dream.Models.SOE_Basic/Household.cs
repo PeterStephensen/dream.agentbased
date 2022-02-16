@@ -100,9 +100,11 @@ namespace Dream.Models.SOE_Basic
                     _year = _settings.StartYear + 1.0 * _time.Now / _settings.PeriodsPerYear;
                     ReportToStatistics();
 
-                    _unemp = _firmEmployment == null;
-                    _w = _unemp ? 0.0 : _firmEmployment.Wage;
-                    _unempDuration = _unemp ? _unempDuration + 1 : 0;
+                    //_unemp = _firmEmployment == null;
+                    //_w = _unemp ? 0.0 : _firmEmployment.Wage;
+                    //_unempDuration = _unemp ? _unempDuration + 1 : 0;
+                    _unempDuration = _w > 0 ? 0 : _unempDuration+1;
+
 
                     if (_time.Now == 0)
                         _w = _simulation.Statistics.PublicMarketWage;
@@ -174,6 +176,8 @@ namespace Dream.Models.SOE_Basic
                         else
                             _productivity = 0;
 
+                    _w = _firmEmployment == null ? 0.0 : _firmEmployment.Wage;
+                    
                     _age++;
                     break;
 
@@ -369,7 +373,7 @@ namespace Dream.Models.SOE_Basic
         /// </summary>
         public bool Unemployed
         {
-            get { return _unemp; }
+            get { return _w == 0.0; }
         }
 
         /// <summary>

@@ -28,6 +28,7 @@ namespace Dream.Models.SOE_Basic
         StreamWriter _fileDBHouseholds;
         StreamWriter _fileDBFirms;
         StreamWriter _fileDBStatistics;
+        StreamWriter _fileMacro;
         double _macroProductivity = 1.0;
         double _interestRate;
         double _meanValue = 0;
@@ -37,8 +38,11 @@ namespace Dream.Models.SOE_Basic
         double _expDiscountedProfits = 0;
         double _sharpeRatio = 0;
         double _expSharpeRatio = 0;
-        double _yr_consumption = 0;
+        double _yr_consumption = 0; 
         int _yr_employment = 0;
+        double _totalEmployment = 0;
+        double _totalSales = 0;
+
 
         #endregion
 
@@ -102,6 +106,15 @@ namespace Dream.Models.SOE_Basic
                         using (StreamWriter sw = File.CreateText(path))
                             sw.WriteLine("n_firms\tPrice\tWage\tDiscountedProfits");
 
+                    if(_settings.ShockPeriod==-1)
+                        path = _settings.ROutputDir + "\\base.txt";
+                    else
+                        path = _settings.ROutputDir + "\\count.txt";
+
+                    if (File.Exists(path)) File.Delete(path);
+                    _fileMacro = File.CreateText(path);
+                    _fileMacro.WriteLine("Time\texpSharpeRatio\tmacroProductivity\tmarketPrice\tmarketWage\tnFirms\tEmployment\tSales");
+
                     break;
 
                 case Event.System.PeriodStart:
@@ -150,21 +163,19 @@ namespace Dream.Models.SOE_Basic
                     // Statistics
                     double meanWage = 0;
                     double meanPrice = 0;
-                    double n = 0;
-                    double totSales = 0;
+                    //double n = 0;
+                    _totalSales = 0;
+                    _totalEmployment = 0;
                     double totProfit = 0;
                     _meanValue = 0;
                     double mean_age = 0;
                     _discountedProfits = 0;
                     foreach(Firm f in _simulation.Firms)
                     {
-                        if(f.Age>2*12)
-                        {
-                            meanWage += f.Wage * f.Employment;
-                            meanPrice += f.Price * f.Sales;
-                            n += f.Employment;
-                            totSales += f.Sales;
-                        }
+                        meanWage += f.Wage * f.Employment;
+                        meanPrice += f.Price * f.Sales;
+                        _totalEmployment += f.Employment;
+                        _totalSales += f.Sales;
 
                         //totProfit += f.ExpectedProfit;
                         _meanValue += f.Value;
@@ -187,13 +198,13 @@ namespace Dream.Models.SOE_Basic
                     _expProfit = totProfit / _simulation.Firms.Count;
                     
                     if(meanWage>0)
-                        _marketWage = meanWage / n;
+                        _marketWage = meanWage / _totalEmployment;
 
                     if (_time.Now > _settings.FirmPriceMechanismStart)
                     {
 
-                        if(meanPrice > 0 & totSales>0)
-                            _marketPrice = meanPrice / totSales;
+                        if(meanPrice > 0 & _totalSales>0)
+                            _marketPrice = meanPrice / _totalSales;
 
                         _discountedProfits /= _marketPrice;
 
@@ -280,19 +291,28 @@ namespace Dream.Models.SOE_Basic
                             RunRScript("..\\..\\..\\R\\graphs.R");
 
 
-                            // Shock
-                            if (_time.Now == _settings.ShockPeriod)
-                                _macroProductivity = 0.8;
 
-                            _nFirmCloseNatural = 0;
-                            _nFirmCloseTooBig = 0;
-                            _nFirmCloseNegativeProfit = 0;
-                            _nFirmCloseZeroEmployment = 0;
-                            _nFirmNew = 0;
 
                     }
 
-                    if(_time.Now==_settings.StatisticsOutputPeriode)
+                    _nFirmCloseNatural = 0;
+                    _nFirmCloseTooBig = 0;
+                    _nFirmCloseNegativeProfit = 0;
+                    _nFirmCloseZeroEmployment = 0;
+                    _nFirmNew = 0;
+
+                    // Shock: Productivity shock
+                    if (_time.Now == _settings.ShockPeriod)
+                    {
+                        if(_settings.ShockID==EShock.Productivity)
+                            _macroProductivity = 0.8;
+
+                    }
+
+                    _fileMacro.WriteLineTab(_time.Now, _expSharpeRatio, _macroProductivity, _marketPrice, _marketWage, _simulation.Firms.Count, _totalEmployment, _totalSales);
+                    _fileMacro.Flush();
+
+                    if (_time.Now==_settings.StatisticsOutputPeriode)
                     {
                         using (StreamWriter sw = File.AppendText(_settings.ROutputDir + "\\output.txt"))
                         {
@@ -305,6 +325,7 @@ namespace Dream.Models.SOE_Basic
                 case Event.System.Stop:
                     _fileFirmReport.Close();
                     _fileHouseholdReport.Close();
+                    _fileMacro.Close();
                     break;
 
                 default:
@@ -347,7 +368,7 @@ namespace Dream.Models.SOE_Basic
         #region Write()
         void Write()
         {
-            _fileDBStatistics.WriteLine("{0}\t{1}\t{2}\t{3}", _expSharpeRatio, _macroProductivity, _marketPrice, _marketWage);
+            _fileDBStatistics.WriteLineTab(_expSharpeRatio, _macroProductivity, _marketPrice, _marketWage);
 
         }
         #endregion

@@ -137,7 +137,7 @@ namespace Dream.Models.SOE_Basic
 
                 case Event.System.PeriodStart:
                     _statistics.Communicate(EStatistics.FirmNew, _nFirmNew);
-                    Console.WriteLine("{0:#.##}\t{1}", 1.0 * _settings.StartYear + 1.0 * _time.Now / _settings.PeriodsPerYear, _firms.Count);
+                    Console.WriteLine("{0:#.##}\t{1}\t{2}", 1.0 * _settings.StartYear + 1.0 * _time.Now / _settings.PeriodsPerYear, _firms.Count, _households.Count);
                                         
                     base.EventProc(idEvent);
                     break;
@@ -148,7 +148,17 @@ namespace Dream.Models.SOE_Basic
                     for (int i = 0; i < _settings.HouseholdNewBorn; i++)
                         _households += new Household();
 
-                    
+                    // Shock: 10% stigning i arbejdsudbud 
+                    if (_time.Now == _settings.ShockPeriod)
+                    {
+                        if(_settings.ShockID==EShock.LaborSupply)
+                        for (int i = 0; i < 0.1 * _households.Count; i++)
+                            _households += new Household();
+
+                    }
+
+
+
                     // After burn-in-stuff    
                     if (_time.Now == _settings.BurnInPeriod1)
                     {
