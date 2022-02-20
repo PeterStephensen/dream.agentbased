@@ -374,8 +374,8 @@ if(d$Year[1]>2050 & length(d$Year)>50)
 }else
 {
   
-  plot(d$Year, d$YearConsumption, type="l", ylab="Consumption per year", xlab="Year")
-  plot(d$Year, d$YearEmployment, type="l", ylab="Employment per year", xlab="Year")
+  plot(d$Year, d$YearConsumption, type="b", ylab="Consumption per year", xlab="Year", cex=0.5, pch=20)
+  plot(d$Year, d$YearEmployment, type="b", ylab="Employment per year", xlab="Year", cex=0.5, pch=20)
     
 }
 

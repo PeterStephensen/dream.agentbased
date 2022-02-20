@@ -48,10 +48,10 @@ namespace Dream.Models.SOE_Basic
     #region EShock
     public enum EShock
     {
+        Nothing,
         Productivity,
         Tsunami,
-        LaborSupply,
-        Nothing
+        LaborSupply
     }
 
     #endregion

@@ -7,9 +7,9 @@ namespace Dream.Models.SOE_Basic
         static void Main(string[] args)
         {
 
-            Settings settings = new Settings();
+            Settings settings = new();
 
-            double scale = 3.0; // Scale the model up and down
+            double scale = 5*1.0; // Scale the model up and down
             
             //Firms
             settings.NumberOfFirms = (int)(300 * scale);
@@ -109,17 +109,24 @@ namespace Dream.Models.SOE_Basic
                       
             // Time and randomseed           
             settings.StartYear = 2014;
-            settings.EndYear = 2378;
+            settings.EndYear = 2160;
             settings.PeriodsPerYear = 12;
 
             settings.StatisticsOutputPeriode = (2075 - 2014) * 12;
             settings.StatisticsGraphicsPlotInterval = 12 * 1;
             settings.StatisticsGraphicsStartPeriod = 12*150;   // SE HER !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-            settings.ShockID = EShock.Tsunami;
-            settings.ShockPeriod = (2100 - 2014) * 12;
+            
+            if(args.Length == 1)
+            {
+                //settings.Shock = EShock.Tsunami;
+                settings.Shock = (EShock)Int32.Parse(args[0]);
+                settings.ShockPeriod = (2100 - 2014) * 12;
+            }
 
-            settings.RandomSeed = 123;
+            settings.SaveScenario = true;
+
+            //settings.RandomSeed = 123;
             //settings.FirmNumberOfNewFirms = 1;
 
             settings.BurnInPeriod1 = (2035 - 2014) * 12;
@@ -139,6 +146,7 @@ namespace Dream.Models.SOE_Basic
             // Run the simulation
             new Simulation(settings, new Time(0, (1 + settings.EndYear - settings.StartYear) * settings.PeriodsPerYear - 1));
 
+            Console.Write("\n");
             Console.WriteLine(DateTime.Now - t0);
             //Console.ReadLine();
 

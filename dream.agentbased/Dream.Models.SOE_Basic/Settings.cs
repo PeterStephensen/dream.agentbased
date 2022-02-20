@@ -235,8 +235,12 @@ namespace Dream.Models.SOE_Basic
         /// </summary>
         public int RandomSeed = -1;
 
-        public EShock ShockID = EShock.Nothing;
+        public EShock Shock = EShock.Nothing;
         public int PeriodsPerYear = 1;
+        /// <summary>
+        /// Macro data is recorded and put in the scenario-folder with a scnario-id
+        /// </summary>
+        public bool SaveScenario = false;
 
         public int StartYear = 0;
         public int EndYear = 10;

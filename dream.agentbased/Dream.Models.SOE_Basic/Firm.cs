@@ -125,7 +125,7 @@ namespace Dream.Models.SOE_Basic
 
                     // Shock: Tsunami shock
                     if (_time.Now == _settings.ShockPeriod)
-                        if(_settings.ShockID==EShock.Tsunami)
+                        if(_settings.Shock==EShock.Tsunami)
                             if (_random.NextEvent(0.2))
                                 CloseFirm(EStatistics.FirmCloseNatural);
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 using Dream.AgentClass;
 using Dream.IO;
@@ -24,6 +25,7 @@ namespace Dream.Models.SOE_Basic
         Agents<Agent> _tools;
         Settings _settings;
         Random _random;
+        int _seed = 0;
         Firm _randomFirm;
         PublicSector _publicSector;
         Forecaster _forecaster;
@@ -39,15 +41,41 @@ namespace Dream.Models.SOE_Basic
 
             if (_settings.RandomSeed > 0)
             {
-                _random = new Random(_settings.RandomSeed);     // The one and only Random object
+                _random = new(_settings.RandomSeed);     // The one and only Random object
                 Agent.RandomSeed = _settings.RandomSeed;
+                _seed = _settings.RandomSeed;
             }
             else
-                _random = new Random(); 
+            {
+                _random = new();                      // We need to know the seed, even when we havent defined it
+                _seed = _random.Next();
+                _random = new(_seed);                // Overwrite _random with seeded 
+                Agent.RandomSeed = _seed;
+            }
+
+            if (_settings.SaveScenario & _settings.Shock!=EShock.Nothing)
+            {
+                string scnPath = _settings.ROutputDir + "\\scenario_info.txt";
+                using (StreamReader sr = File.OpenText(scnPath))
+                {
+                    sr.ReadLine();                          // Read first line
+                    int seed = Int32.Parse(sr.ReadLine());  // Seed on second line
+
+                    _random = new(seed);                    // Overwrite _random with seeded 
+                    Agent.RandomSeed = seed;
+
+                }
+
+
+
+
+            }
+
 
             if (_instance != null)
                 throw new Exception("Simulation object is singleton");
 
+            
             _instance = this;
 
             _statistics = new Statistics();
@@ -137,7 +165,8 @@ namespace Dream.Models.SOE_Basic
 
                 case Event.System.PeriodStart:
                     _statistics.Communicate(EStatistics.FirmNew, _nFirmNew);
-                    Console.WriteLine("{0:#.##}\t{1}\t{2}", 1.0 * _settings.StartYear + 1.0 * _time.Now / _settings.PeriodsPerYear, _firms.Count, _households.Count);
+                    Console.Write("\r                                                                           ");
+                    Console.Write("\r{0:#.##}\t{1}\t{2}", 1.0 * _settings.StartYear + 1.0 * _time.Now / _settings.PeriodsPerYear, _firms.Count, _households.Count);
                                         
                     base.EventProc(idEvent);
                     break;
@@ -151,7 +180,7 @@ namespace Dream.Models.SOE_Basic
                     // Shock: 10% stigning i arbejdsudbud 
                     if (_time.Now == _settings.ShockPeriod)
                     {
-                        if(_settings.ShockID==EShock.LaborSupply)
+                        if(_settings.Shock==EShock.LaborSupply)
                         for (int i = 0; i < 0.1 * _households.Count; i++)
                             _households += new Household();
 
@@ -275,6 +304,13 @@ namespace Dream.Models.SOE_Basic
         public Random Random
         {
             get { return _random; }
+        }
+        /// <summary>
+        /// Seed used to initialize the Random object
+        /// </summary>
+        public int Seed
+        {
+            get { return _seed; }
         }
 
         public Time Time
