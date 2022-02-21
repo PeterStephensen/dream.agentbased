@@ -322,7 +322,10 @@ namespace Dream.Models.SOE_Basic
         void Marketing()
         {
 
-            if (_random.NextDouble() < _settings.FirmProbabilityRecalculatePrice)
+            bool inZone = Math.Abs((_expSales - _y_optimal) / _y_optimal) < _settings.FirmComfortZoneSales;
+            double probRecalculate = inZone ? _settings.FirmProbabilityRecalculatePriceInZone : _settings.FirmProbabilityRecalculatePrice; 
+
+            if (_random.NextEvent(probRecalculate))
             {
 
                 double p_target = _expPrice;
@@ -337,7 +340,7 @@ namespace Dream.Models.SOE_Basic
                         double markupSensitivity = _settings.FirmPriceMarkupSensitivity;
                         double markdownSensitivity = _settings.FirmPriceMarkdownSensitivity;
 
-                        if(Math.Abs((_expSales - _y_optimal)/ _y_optimal) < _settings.FirmComfortZoneSales)
+                        if(inZone)
                         {
                             markup = _settings.FirmPriceMarkupInZone;
                             markdown = _settings.FirmPriceMarkdownInZone;
@@ -396,7 +399,10 @@ namespace Dream.Models.SOE_Basic
 
             _v_primo = _vacancies; // Primo vacancies
 
-            if (_random.NextEvent(_settings.FirmProbabilityRecalculateWage))
+            bool inZone = Math.Abs((l - _l_optimal) / _l_optimal) < _settings.FirmComfortZoneEmployment;
+            double probRecalculate = inZone ? _settings.FirmProbabilityRecalculateWageInZone : _settings.FirmProbabilityRecalculateWage;
+            
+            if (_random.NextEvent(probRecalculate))
             {
 
                 double markup = _settings.FirmWageMarkup;
@@ -404,7 +410,7 @@ namespace Dream.Models.SOE_Basic
                 double markupSensitivity = _settings.FirmWageMarkupSensitivity;
                 double markdownSensitivity = _settings.FirmWageMarkdownSensitivity;
 
-                if (Math.Abs((l - _l_optimal) / _l_optimal) < _settings.FirmComfortZoneEmployment)
+                if (inZone)
                 {
                     markup = _settings.FirmWageMarkupInZone;
                     markdown = _settings.FirmWageMarkdownInZone;

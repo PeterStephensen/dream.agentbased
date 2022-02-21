@@ -17,6 +17,7 @@ namespace Dream.Models.SOE_Basic
             public const int PeriodStart = 3;
             public const int PeriodEnd = 4;
 
+
         }
         #endregion
 

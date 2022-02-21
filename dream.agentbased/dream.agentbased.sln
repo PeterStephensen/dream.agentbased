@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dream.AgentClass", "Dream.A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dream.Models.SOE_Basic", "Dream.Models.SOE_Basic\Dream.Models.SOE_Basic.csproj", "{80B206F2-38AC-4A5C-86FC-19645779A1E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dream.IO", "Dream.IO\Dream.IO.csproj", "{A673F3B1-9E73-4E51-BD88-9F12F59C702F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dream.IO", "Dream.IO\Dream.IO.csproj", "{A673F3B1-9E73-4E51-BD88-9F12F59C702F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

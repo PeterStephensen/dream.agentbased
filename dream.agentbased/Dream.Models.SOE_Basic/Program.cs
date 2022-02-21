@@ -9,7 +9,7 @@ namespace Dream.Models.SOE_Basic
 
             Settings settings = new();
 
-            double scale = 5*1.0; // Scale the model up and down
+            double scale = 1*1.0; // Scale the model up and down
             
             //Firms
             settings.NumberOfFirms = (int)(300 * scale);
@@ -34,8 +34,9 @@ namespace Dream.Models.SOE_Basic
             settings.FirmWageMarkdownInZone = mark;  //0.07 
             settings.FirmWageMarkdownSensitivityInZone = sens;
 
-            settings.FirmProbabilityRecalculateWage = 0.8;
-            
+            settings.FirmProbabilityRecalculateWage = 0.5; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            settings.FirmProbabilityRecalculateWageInZone = 0.2; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
             //-----
             settings.FirmPriceMarkup = 2 * mark;  // 0.08
             settings.FirmPriceMarkupSensitivity = sens;
@@ -48,7 +49,9 @@ namespace Dream.Models.SOE_Basic
             settings.FirmPriceMarkdownSensitivityInZone = sens; 
 
             settings.FirmPriceMechanismStart = 12 * 1;
-            settings.FirmProbabilityRecalculatePrice = 0.8;
+            
+            settings.FirmProbabilityRecalculatePrice = 0.5; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            settings.FirmProbabilityRecalculatePriceInZone = 0.2; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
             //-----
             settings.FirmComfortZoneEmployment = 0.05;
