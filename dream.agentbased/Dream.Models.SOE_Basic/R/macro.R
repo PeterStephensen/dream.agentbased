@@ -35,12 +35,19 @@ d_yr = d %>% group_by(Year) %>%
 maxyr = max(d_yr$Year)
 d_yr = d_yr[d_yr$Year<maxyr & d_yr$Year>0,]
 
-
-pplot = function(t,x, main)
+pplot = function(t,x, main="")
 {
   plot(t, x, type="l", main=main, ylim=c(0,max(x)), ylab="", xlab="Year")
   abline(h=0)  
 }
+
+#pplot(d$Time, d$nFirms)
+
+#s = spectrum(d$Employment, log="no")
+#x = s$freq
+#y = s$spec
+#plot(x,y, type="l")
+#abline(h=0)
 
 pdf(paste0(o_dir, "\\macro.pdf"))
 
@@ -50,21 +57,25 @@ plot(d$Time/12, d$expSharpeRatio, type="l", main="Sharpe Ratio", xlab="Year", yl
 abline(h=0)
 
 pplot(d$Time/12, d$marketWage/d$marketPrice, main="Real wage")
-pplot(d_yr$Year, d_yr$Wage/d_yr$Price, main="Real wage (Yearly)")
+#pplot(d_yr$Year, d_yr$Wage/d_yr$Price, main="Real wage (Yearly)")
 
 pplot(d$Time/12, d$Sales, main="Sales")
-pplot(d_yr$Year, d_yr$Sales, main="Sales (Yearly)")
+#pplot(d_yr$Year, d_yr$Sales, main="Sales (Yearly)")
 
 pplot(d$Time/12, d$Employment, main="Employment")
-pplot(d_yr$Year, d_yr$Employment, main="Employment (Yearly)")
+#pplot(d_yr$Year, d_yr$Employment, main="Employment (Yearly)")
 
 pplot(d$Time/12, d$marketPrice, main="Price")
-pplot(d_yr$Year, d_yr$Price, main="Price (Yearly)")
+#pplot(d_yr$Year, d_yr$Price, main="Price (Yearly)")
 
 pplot(d$Time/12, d$marketWage, main="Wage")
-pplot(d_yr$Year, d_yr$Wage, main="Wage (Yearly)")
+#pplot(d_yr$Year, d_yr$Wage, main="Wage (Yearly)")
 
 dev.off()
+
+
+
+
 
 
 

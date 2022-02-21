@@ -21,41 +21,41 @@ namespace Dream.Models.SOE_Basic
             settings.FirmFi = 2;
 
             //-----
-            double mark = 0.02;
-            double sens = 2.0;
+            double mark = 0.08; // SE HER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            double sens = 0.5;
 
             settings.FirmWageMarkup = 2 * mark; 
             settings.FirmWageMarkupSensitivity = sens;
-            settings.FirmWageMarkdown = 2 * mark; //0.07
+            settings.FirmWageMarkdown = 2 * mark;  
             settings.FirmWageMarkdownSensitivity = sens;
 
-            settings.FirmWageMarkupInZone = mark; 
+            settings.FirmWageMarkupInZone = 1 * mark; 
             settings.FirmWageMarkupSensitivityInZone = sens;
-            settings.FirmWageMarkdownInZone = mark;  //0.07 
+            settings.FirmWageMarkdownInZone = 1 * mark;  
             settings.FirmWageMarkdownSensitivityInZone = sens;
 
-            settings.FirmProbabilityRecalculateWage = 0.5; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            settings.FirmProbabilityRecalculateWageInZone = 0.2; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            settings.FirmProbabilityRecalculateWage = 0.5; 
+            settings.FirmProbabilityRecalculateWageInZone = 0.2; 
 
             //-----
-            settings.FirmPriceMarkup = 2 * mark;  // 0.08
+            settings.FirmPriceMarkup = 2 * mark;  
             settings.FirmPriceMarkupSensitivity = sens;
             settings.FirmPriceMarkdown = 2 * mark;  
-            settings.FirmPriceMarkdownSensitivity = sens;  //5.0 
+            settings.FirmPriceMarkdownSensitivity = sens; 
 
-            settings.FirmPriceMarkupInZone = mark;  // 0.08  
-            settings.FirmPriceMarkupSensitivityInZone = sens;  //1.0
+            settings.FirmPriceMarkupInZone = mark;  
+            settings.FirmPriceMarkupSensitivityInZone = sens;  
             settings.FirmPriceMarkdownInZone = mark;  
             settings.FirmPriceMarkdownSensitivityInZone = sens; 
 
             settings.FirmPriceMechanismStart = 12 * 1;
             
-            settings.FirmProbabilityRecalculatePrice = 0.5; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            settings.FirmProbabilityRecalculatePriceInZone = 0.2; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            settings.FirmProbabilityRecalculatePrice = 0.5; 
+            settings.FirmProbabilityRecalculatePriceInZone = 0.2; 
 
             //-----
-            settings.FirmComfortZoneEmployment = 0.05;
-            settings.FirmComfortZoneSales = 0.05;
+            settings.FirmComfortZoneEmployment = 0.15;
+            settings.FirmComfortZoneSales = 0.15;
 
             //-----
             settings.FirmDefaultProbabilityNegativeProfit = 0.1;
@@ -127,7 +127,7 @@ namespace Dream.Models.SOE_Basic
                 settings.ShockPeriod = (2100 - 2014) * 12;
             }
 
-            settings.SaveScenario = true;
+            //settings.SaveScenario = true;
 
             //settings.RandomSeed = 123;
             //settings.FirmNumberOfNewFirms = 1;

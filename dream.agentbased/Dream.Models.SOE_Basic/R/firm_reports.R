@@ -3,7 +3,6 @@ library(dplyr)
 
 #install.packages("ContourFunctions")
 
-
 if(Sys.info()['nodename'] == "C1709161")    # PSP's machine
 {
   o_dir = "C:/test/Dream.AgentBased.MacroModel"  
@@ -14,7 +13,6 @@ if(Sys.info()['nodename'] == "VDI00316")    # Fjernskrivebord
 }
 
 d_report = read.delim(paste0(o_dir,"/file_reports.txt"))
-
 
 pdf(paste0(o_dir,"/firm_reports.pdf"))
 
@@ -37,11 +35,13 @@ par(mfrow=c(3,3))
 
 for(i in 1:n)
 {
-  #i=340
+  #i=1
   dr = d_report %>% filter(ID==ids[i])
   #dr = dr %>% filter(Time>2050)
   
-
+  if(nrow(dr)<2)
+    next
+  
   if(T)
   {
     if(dr$Productivity[2] < 1.8)
@@ -138,7 +138,7 @@ for(i in 1:n)
   
   text(0.5,1-d*0, date(), adj=0, cex=0.8)  
   text(0.5,1-d*1, ids[i], adj=0, cex=0.8)  
-  text(0.5,1-d*2, dec(dr$Productivity[1], 2), adj=0, cex=0.8)  
+  text(0.5,1-d*2, dec(dr$Productivity[2], 2), adj=0, cex=0.8)  
   text(0.5,1-d*3, dec(dr$Time[1], 1), adj=0, cex=0.8)  
   text(0.5,1-d*4, dec(dr$Time[nrow(dr)], 1), adj=0, cex=0.8)  
   text(0.5,1-d*5, dec(dr$Time[nrow(dr)]-dr$Time[1], 1), adj=0, cex=0.8)  
