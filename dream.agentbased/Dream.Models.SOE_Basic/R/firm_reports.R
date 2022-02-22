@@ -50,9 +50,9 @@ for(i in 1:n)
   
   if(T)
   {
-    if(nrow(dr)>12*3)
+    if(nrow(dr)>12*4)
     {
-      dr = dr[1:(12*3),]
+      dr = dr[1:(12*4),]
     }
     
   }
@@ -70,7 +70,7 @@ for(i in 1:n)
   lines(dr$Time, dr$PotensialSales, col=cols[2], type="s")
   lines(dr$Time, dr$ExpectedSales, col=cols[3], type="l")
   lines(dr$Time, dr$OptimalProduction, col=cols[4], type="l")
-  lines(dr$Time, 0.95*dr$OptimalProduction, lty=2, type="l")
+  lines(dr$Time, 0.85*dr$OptimalProduction, lty=2, type="l")
   #lines(dr$Time, dr$ExpectedSales, col=cols[3], type="l")
   abline(v=2050, lty=2)
   abline(h=0)
@@ -82,24 +82,27 @@ for(i in 1:n)
   lines(dr$Time, dr$PotensialSales, col=cols[2], type="s")
   lines(dr$Time, dr$ExpectedSales, col=cols[3], type="l")
   lines(dr$Time, dr$OptimalProduction, col=cols[4], type="l")
-  lines(dr$Time, 0.95*dr$OptimalProduction, lty=2, type="l")
+  lines(dr$Time, 0.85*dr$OptimalProduction, lty=2, type="l")
   abline(v=2050, lty=2)
   abline(h=0)
   ContourFunctions::multicolor.title(c("Production ","Poten. sales ", "Exp. Sales ", "Optim. Produc. "), 1:4, cex.main = 0.7)
   
-  plot(dr$Time, dr$Wage/dr$ExpectedWage, type="s", ylab="Wage/MarketWage", 
-       main="", xlab="Time", col=cols[3], ylim=c(0.93, 1.07))
-  abline(h=1)
-  #abline(h=0.95, lty=2)
-  #abline(h=1.05, lty=2)
+  mx = max(dr$Wage / dr$ExpectedWage[1])
+  mn = min(dr$Wage / dr$ExpectedWage[1])
+  plot(dr$Time, dr$Wage / dr$ExpectedWage[1], type="s", ylab="Wage", 
+       main="", xlab="Time", col=cols[3], ylim=c(0.9*mn, 1.1*mx))   #
+  lines(dr$Time, dr$ExpectedWage / dr$ExpectedWage[1], lty=2)
 
   plot(dr$Time, dr$Vacancies, type="s", ylab="Vacancies", main="", xlab="Time", col=cols[3])
   abline(v=2050, lty=2)
   abline(h=0)
 
-  plot(dr$Time, dr$Price/dr$ExpectedPrice, type="s", ylab="Price/MarketPrice", main="", 
-       xlab="Time", col=cols[3], ylim=c(0.93, 1.07))
-  abline(h=1)
+  mx = max(dr$Price / dr$ExpectedPrice[1])  
+  mn = min(dr$Price / dr$ExpectedPrice[1])
+  plot(dr$Time, dr$Price / dr$ExpectedPrice[1], type="s", ylab="Price", main="", 
+       xlab="Time", col=cols[3], ylim=c(0.9*mn, 1.1*mx)) 
+  lines(dr$Time, dr$ExpectedPrice / dr$ExpectedPrice[1], lty=2)
+  #abline(h=1)
   #abline(h=0.95, lty=2)
   #abline(h=1.05, lty=2)
 

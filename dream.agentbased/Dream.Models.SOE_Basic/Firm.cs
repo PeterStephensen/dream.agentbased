@@ -112,7 +112,7 @@ namespace Dream.Models.SOE_Basic
                     _s_primo = _sales;
 
                     Expectations();
-                    Production();
+                    Produce();
                     Management();
                     Marketing();
                     HumanResource();
@@ -263,7 +263,7 @@ namespace Dream.Models.SOE_Basic
         /// <summary>
         /// Actual production in this period
         /// </summary>
-        void Production()
+        void Produce()
         {
             double z = Math.Pow(_l_primo, _settings.FirmAlpha) - _settings.FirmFi;
             _y_primo = z > 0 ? _phi * z : 0;
@@ -384,12 +384,11 @@ namespace Dream.Models.SOE_Basic
         /// </summary>
         void HumanResource()
         {
-
             double l = CalcEmployment();
             _vacancies = 0;
             if (_l_optimal > l)
             {
-                double gamma = _age > _settings.FirmStartupPeriod ? 0.25 : 1.0; // Kik mere på 0.25!!!!!!!!!!!!!!!!!
+                double gamma = _age >= _settings.FirmStartupPeriod ? 0.25 : 1.0; // Kik mere på 0.25!!!!!!!!!!!!!!!!!
                 
                 if(_l_optimal - l <= 5)
                     _vacancies = _l_optimal - l;
@@ -430,7 +429,6 @@ namespace Dream.Models.SOE_Basic
                         double g = markup * PriceFunc(markupSensitivity * (_vacancies + _expQuitters - _expApplications) / _employed.Count);
                         w_target = (1 + g) * _expWage;
                     }
-
                 }
                 else // if _vacancies=0
                 {
@@ -501,6 +499,10 @@ namespace Dream.Models.SOE_Basic
         public double OptimalProduction
         {
             get { return _y_optimal; }
+        }
+        public double Production
+        {
+            get { return _y_primo; }
         }
         public double Profit
         {

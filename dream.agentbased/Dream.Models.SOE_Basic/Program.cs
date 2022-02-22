@@ -71,11 +71,11 @@ namespace Dream.Models.SOE_Basic
 
             // Households
             settings.NumberOfHouseholdsPerFirm = 10000/300;
-            settings.HouseholdNumberFirmsSearchJob = 5;     //(int)(0.05 * settings.NumberOfFirms); // Vigtig for unemplDuration
-            settings.HouseholdNumberFirmsSearchShop = 10;    // (int)(0.05 * settings.NumberOfFirms);
+            settings.HouseholdNumberFirmsSearchJob = 5;     // Try 20!
+            settings.HouseholdNumberFirmsSearchShop = 10;    // 
             settings.HouseholdProbabilityQuitJob = 0.01;   
             settings.HouseholdProbabilitySearchForJob = 0.01;
-            settings.HouseholdProbabilitySearchForShop = 0.01;//*************************
+            settings.HouseholdProbabilitySearchForShop = 0.01;
             settings.HouseholdProductivityLogSigmaInitial = 0.6;
             settings.HouseholdProductivityLogMeanInitial = -0.5 * Math.Pow(settings.HouseholdProductivityLogSigmaInitial, 2); // Sikrer at forventet produktivitet er 1
             settings.HouseholdProductivityErrorSigma = 0.02;
@@ -86,7 +86,7 @@ namespace Dream.Models.SOE_Basic
 
             // Investor
             settings.InvestorInitialInflow = (int)(17 * scale);
-            settings.InvestorProfitSensitivity = 0.5;            
+            settings.InvestorProfitSensitivity = 5.0;   // Try 30 !!!!!!            
             
             // Statistics
             settings.StatisticsInitialMarketPrice = 2.0;
@@ -118,7 +118,6 @@ namespace Dream.Models.SOE_Basic
             settings.StatisticsOutputPeriode = (2075 - 2014) * 12;
             settings.StatisticsGraphicsPlotInterval = 12 * 1;
             settings.StatisticsGraphicsStartPeriod = 12*150;   // SE HER !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
             
             if(args.Length == 1)
             {
