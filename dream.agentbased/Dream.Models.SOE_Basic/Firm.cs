@@ -81,6 +81,7 @@ namespace Dream.Models.SOE_Basic
             _employed = new List<Household>();
 
             _phi0 = _random.NextPareto(_settings.FirmParetoMinPhi, _settings.FirmPareto_k);
+            _phi = _phi0;
 
             if (_random.NextEvent(_settings.StatisticsFirmReportSampleSize))
                 _report = true;

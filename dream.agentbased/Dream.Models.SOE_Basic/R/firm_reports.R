@@ -35,7 +35,7 @@ par(mfrow=c(3,3))
 
 for(i in 1:n)
 {
-  #i=1
+  #i=222
   dr = d_report %>% filter(ID==ids[i])
   #dr = dr %>% filter(Time>2050)
   
@@ -44,7 +44,7 @@ for(i in 1:n)
   
   if(T)
   {
-    if(dr$Productivity[2] < 1.8)
+    if(dr$Productivity[1] < 1.8)
       next
   }
   
