@@ -389,9 +389,9 @@ namespace Dream.Models.SOE_Basic
             _vacancies = 0;
             if (_l_optimal > l)
             {
-                double gamma = _age >= _settings.FirmStartupPeriod ? 0.25 : 1.0; // Kik mere på 0.25!!!!!!!!!!!!!!!!!
+                double gamma = _age >= _settings.FirmStartupPeriod ? _settings.FirmVacanciesShare : 1.0; 
                 
-                if(_l_optimal - l <= 5)
+                if(_l_optimal - l <= _settings.FirmMinRemainingVacancies)
                     _vacancies = _l_optimal - l;
                 else
                     _vacancies = gamma * (_l_optimal - l);

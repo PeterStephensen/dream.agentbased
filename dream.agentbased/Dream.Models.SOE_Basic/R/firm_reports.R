@@ -50,16 +50,16 @@ for(i in 1:n)
   
   if(T)
   {
-    if(nrow(dr)>12*4)
+    if(nrow(dr)>12*5)
     {
-      dr = dr[1:(12*4),]
+      dr = dr[1:(12*5),]
     }
     
   }
   
   mx = max(max(dr$Employment), max(dr$OptimalEmployment))
   plot(dr$Time, dr$Employment, type="s", ylab="Employment", xlab="Time", main="", col=cols[3], ylim=c(0,1.1*mx))
-  lines(dr$Time, dr$OptimalEmployment, col=cols[4], type="l")
+  lines(dr$Time, dr$OptimalEmployment, col=cols[4], type="s")
   abline(v=2050, lty=2)
   abline(h=0)
   ContourFunctions::multicolor.title(c("Actual employment ","Optimal employment"), 3:4, cex.main = 0.7)

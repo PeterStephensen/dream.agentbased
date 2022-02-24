@@ -170,7 +170,11 @@ namespace Dream.Models.SOE_Basic
         /// </summary>
         public double FirmProfitLimitZeroPeriod { get; set; } = 0.0;
 
-
+        /// <summary>
+        /// Proportion of optimal vacancies advertised 
+        /// </summary>
+        public double FirmVacanciesShare { get; set; } = 0.1;
+        public int FirmMinRemainingVacancies { get; set; } = 0;
 
         //---------------------------------
         /// <summary>

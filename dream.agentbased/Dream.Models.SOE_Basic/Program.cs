@@ -39,14 +39,14 @@ namespace Dream.Models.SOE_Basic
 
             //-----
             settings.FirmPriceMarkup = 2 * mark;  
-            settings.FirmPriceMarkupSensitivity = sens;
-            settings.FirmPriceMarkdown = 2 * mark;  
-            settings.FirmPriceMarkdownSensitivity = sens; 
+            settings.FirmPriceMarkupSensitivity = sens; 
+            settings.FirmPriceMarkdown = 0.5 * mark;             //Stable prices  
+            settings.FirmPriceMarkdownSensitivity = 0.5 * sens;  //Stable prices 
 
             settings.FirmPriceMarkupInZone = mark;  
             settings.FirmPriceMarkupSensitivityInZone = sens;  
-            settings.FirmPriceMarkdownInZone = mark;  
-            settings.FirmPriceMarkdownSensitivityInZone = sens; 
+            settings.FirmPriceMarkdownInZone = 0.25* mark;                //Stable prices  
+            settings.FirmPriceMarkdownSensitivityInZone = 0.25 * sens;    //Stable prices 
 
             settings.FirmPriceMechanismStart = 12 * 1;
             
@@ -65,14 +65,17 @@ namespace Dream.Models.SOE_Basic
             settings.FirmExpectationSmooth = 0.4;
             settings.FirmMaxEmployment = 700;
 
+            settings.FirmVacanciesShare = 0.1;
+            settings.FirmMinRemainingVacancies = 5;
+
             settings.FirmProfitLimitZeroPeriod = (2040 - 2014) * 12;
 
             //settings.FirmProductivityGrowth = 0.02;
 
             // Households
             settings.NumberOfHouseholdsPerFirm = 10000/300;
-            settings.HouseholdNumberFirmsSearchJob = 5;     // Try 20!
-            settings.HouseholdNumberFirmsSearchShop = 10;    // 
+            settings.HouseholdNumberFirmsSearchJob = 4;     // Try 20!
+            settings.HouseholdNumberFirmsSearchShop = 75;    //----------------------- 
             settings.HouseholdProbabilityQuitJob = 0.01;   
             settings.HouseholdProbabilitySearchForJob = 0.01;
             settings.HouseholdProbabilitySearchForShop = 0.01;
