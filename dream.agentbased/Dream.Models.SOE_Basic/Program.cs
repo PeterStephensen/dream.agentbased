@@ -89,8 +89,8 @@ namespace Dream.Models.SOE_Basic
 
             // Investor
             settings.InvestorInitialInflow = (int)(17 * scale);
-            settings.InvestorProfitSensitivity = 5.0;   // Try 30 !!!!!!            
-            
+            settings.InvestorProfitSensitivity = 0.05;   // 5.0....Try 30 !!!!!!            
+
             // Statistics
             settings.StatisticsInitialMarketPrice = 2.0;
             settings.StatisticsInitialInterestRate = Math.Pow(1 + 0.05, 1.0 / 12) - 1; // 5% p.a.

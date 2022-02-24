@@ -69,6 +69,8 @@ plot(d$Time/12, d$expSharpeRatio, type="l", main="Sharpe Ratio", xlab="Year", yl
 abline(h=0)
 vert_lin(d$Time/12)
 
+pplot(d$Time/12, d$SigmaRisk, main="Risk (black) and Profit (red)")
+lines(d$Time/12, 7+3*d$SigmaRisk*d$SharpeRatio, col="red")
 
 #pplot(d$Time/12, d$Production/(d$nLaborSupply - d$nUnemployed), main="Productivity per head")
 
