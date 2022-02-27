@@ -60,14 +60,15 @@ pplot = function(t,x, main="", s_miny=0, s_maxy=1.2)
 
 pdf(paste0(o_dir, "\\macro.pdf"))
 
+plot(d$Time/12, d$expSharpeRatio, type="l", main="Sharpe Ratio", xlab="Year", ylab="", ylim=c(-0.2, 0.2))
+abline(h=0)
+vert_lin(d$Time/12)
+
 pplot(d$Time/12, d$nFirms, main="Number of firms")
 
 pplot(d$Time/12, d$nFirmClosed, main="New (red) and Closed firms")
 lines(d$Time/12, d$nFirmNew, col="red", lwd=2)
 
-plot(d$Time/12, d$expSharpeRatio, type="l", main="Sharpe Ratio", xlab="Year", ylab="", ylim=c(-0.2, 0.2))
-abline(h=0)
-vert_lin(d$Time/12)
 
 pplot(d$Time/12, d$SigmaRisk, main="Risk (black) and Profit (red)")
 lines(d$Time/12, 7+3*d$SigmaRisk*d$SharpeRatio, col="red")
@@ -78,7 +79,6 @@ lines(d$Time/12, 7+3*d$SigmaRisk*d$SharpeRatio, col="red")
 
 pplot(d$Time/12, d$Production/d$nFirms, main="Productivity per firm")
 lines(d$Time/12, 6+10*d$expSharpeRatio, lty=2)
-
 
 pplot(d$Time/12, d$Sales, main="Sales")
 #pplot(d_yr$Year, d_yr$Sales, main="Sales (Yearly)")

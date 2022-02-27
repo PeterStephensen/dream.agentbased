@@ -9,7 +9,7 @@ namespace Dream.Models.SOE_Basic
 
             Settings settings = new();
 
-            double scale = 1*1.0; // Scale the model up and down
+            double scale = 5*1.0; // Scale the model up and down
             
             //Firms
             settings.NumberOfFirms = (int)(300 * scale);
@@ -129,7 +129,7 @@ namespace Dream.Models.SOE_Basic
                 settings.ShockPeriod = (2100 - 2014) * 12;
             }
 
-            //settings.SaveScenario = true;
+            settings.SaveScenario = true;
 
             //settings.RandomSeed = 123;
             //settings.FirmNumberOfNewFirms = 1;
