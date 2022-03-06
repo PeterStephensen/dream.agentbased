@@ -24,16 +24,20 @@ if(Sys.info()['nodename'] == "VDI00316")    # Fjernskrivebord
 
 d = read.delim(paste0(o_dir, "\\macro.txt"))
 
-yr0 = 12*(2100-2014)-1
-d = d %>% filter(Time>yr0)
-d$Time = d$Time - yr0 
-d$Year = floor(d$Time/12)
-
-d_yr = d %>% group_by(Year) %>%
-       summarise(Sales=sum(Sales), Employment=sum(Employment), Price=mean(marketPrice), 
-                 Wage=mean(marketWage))
-maxyr = max(d_yr$Year)
-d_yr = d_yr[d_yr$Year<maxyr & d_yr$Year>0,]
+if(T)
+{
+  yr0 = 12*(2100-2014)-1
+  d = d %>% filter(Time>yr0)
+  d$Time = d$Time - yr0 
+  d$Year = floor(d$Time/12)
+  
+  d_yr = d %>% group_by(Year) %>%
+    summarise(Sales=sum(Sales), Employment=sum(Employment), Price=mean(marketPrice), 
+              Wage=mean(marketWage))
+  maxyr = max(d_yr$Year)
+  d_yr = d_yr[d_yr$Year<maxyr & d_yr$Year>0,]
+  
+}
 
 vert_lin = function(t)
 {
@@ -64,31 +68,36 @@ plot(d$Time/12, d$expSharpeRatio, type="l", main="Sharpe Ratio", xlab="Year", yl
 abline(h=0)
 vert_lin(d$Time/12)
 
-pplot(d$Time/12, d$nFirms, main="Number of firms")
-
+#pplot(d$Time/12, d$nFirmClosed, main="New (red) and Closed firms", s_miny = 0.1, s_maxy = 1.1)
 pplot(d$Time/12, d$nFirmClosed, main="New (red) and Closed firms")
 lines(d$Time/12, d$nFirmNew, col="red", lwd=2)
 
+#pplot(d$Time/12, d$nFirms, main="Number of firms", s_miny = 0.2, s_maxy = 1.1)
+pplot(d$Time/12, d$nFirms, main="Number of firms")
 
-pplot(d$Time/12, d$SigmaRisk, main="Risk (black) and Profit (red)")
-lines(d$Time/12, 7+3*d$SigmaRisk*d$SharpeRatio, col="red")
+#pplot(d$Time/12, d$SigmaRisk, main="Risk (black) and Profit (red)")
+#lines(d$Time/12, 7+3*d$SigmaRisk*d$SharpeRatio, col="red")
 
 #pplot(d$Time/12, d$Production/(d$nLaborSupply - d$nUnemployed), main="Productivity per head")
 
 #pplot(d$Time/12, d$Production/d$Employment, main="Productivity per productivity unit")
 
-pplot(d$Time/12, d$Production/d$nFirms, main="Productivity per firm")
-lines(d$Time/12, 6+10*d$expSharpeRatio, lty=2)
+#pplot(d$Time/12, d$Production/d$nFirms, main="Productivity per firm")
+#lines(d$Time/12, 6+10*d$expSharpeRatio, lty=2)
 
-pplot(d$Time/12, d$Sales, main="Sales")
+pplot(d$Time/12, d$Sales, main="Sales", s_miny = 0.1, s_maxy = 1.1)
 #pplot(d_yr$Year, d_yr$Sales, main="Sales (Yearly)")
 
-pplot(d$Time/12, d$Employment, main="Employment")
+pplot(d$Time/12, d$Employment, main="Employment", s_miny = 0.1, s_maxy = 1.05)
 #pplot(d_yr$Year, d_yr$Employment, main="Employment (Yearly)")
 
-pplot(d$Time/12, d$nUnemployed/d$nLaborSupply, main="Unemployment rate", s_maxy = 1.5)
-lines(d$Time/12, 0.03-0.2*d$expSharpeRatio, lty=2)
-abline(h=0.03, lty=2)
+pplot(d$Time/12, d$nUnemployed/d$nLaborSupply, main="Unemployment rate", s_maxy = 1.7)
+#lines(d$Time/12, 0.03-0.2*d$expSharpeRatio, lty=2)
+#abline(h=0.03, lty=2)
+
+pplot(d$Time/12, d$nHouseholds, main="Poupulation and labor supply (dashed)", s_maxy = 1.7)
+lines(d$Time/12, d$nLaborSupply, lty=2)
+
 
 pplot(d$Time/12, d$marketWage/d$marketPrice, main="Real wage")
 #pplot(d_yr$Year, d_yr$Wage/d_yr$Price, main="Real wage (Yearly)")
@@ -99,8 +108,8 @@ pplot(d$Time/12, d$marketPrice, main="Price")
 pplot(d$Time/12, d$marketWage, main="Wage")
 #pplot(d_yr$Year, d_yr$Wage, main="Wage (Yearly)")
 
-pplot(d$Time/12, d$nHouseholds, main="Number of households (Red: In labor force)", s_miny = 0.5)
-lines(d$Time/12, d$nLaborSupply, col="red")
+#pplot(d$Time/12, d$nHouseholds, main="Number of households (Red: In labor force)", s_miny = 0.5)
+#lines(d$Time/12, d$nLaborSupply, col="red")
 
 dev.off()
 

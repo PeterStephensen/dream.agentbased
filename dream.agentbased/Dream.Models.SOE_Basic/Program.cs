@@ -9,13 +9,15 @@ namespace Dream.Models.SOE_Basic
 
             Settings settings = new();
 
-            double scale = 5*1.0; // Scale the model up and down
+            double scale = 1*1.0; // Scale the model up and down
             
             //Firms
             settings.NumberOfFirms = (int)(300 * scale);
 
-            settings.FirmParetoMinPhi = 0.5; 
+            settings.FirmParetoMinPhi = 0.5;
             settings.FirmPareto_k = 2.5;  // k * (1 - alpha) > 1     
+
+            settings.FirmParetoMinPhiInitial = 1.9;
 
             settings.FirmAlpha = 0.5;
             settings.FirmFi = 2;
@@ -58,7 +60,7 @@ namespace Dream.Models.SOE_Basic
             settings.FirmComfortZoneSales = 0.15;
 
             //-----
-            settings.FirmDefaultProbabilityNegativeProfit = 0.1;
+            settings.FirmDefaultProbabilityNegativeProfit = 0.15;  // Vigtig for kriser !!!!!!!!!!!!!!!!!!
             settings.FirmDefaultStart = 12*5;
             settings.FirmNegativeProfitOkAge = 12*2;
 
@@ -73,7 +75,7 @@ namespace Dream.Models.SOE_Basic
             //settings.FirmProductivityGrowth = 0.02;
 
             // Households
-            settings.NumberOfHouseholdsPerFirm = 10000/300;
+            settings.NumberOfHouseholdsPerFirm = 6000/300;
             settings.HouseholdNumberFirmsSearchJob = 4;     // Try 20!
             settings.HouseholdNumberFirmsSearchShop = 75;    //----------------------- 
             settings.HouseholdProbabilityQuitJob = 0.01;   
@@ -82,17 +84,18 @@ namespace Dream.Models.SOE_Basic
             settings.HouseholdProductivityLogSigmaInitial = 0.6;
             settings.HouseholdProductivityLogMeanInitial = -0.5 * Math.Pow(settings.HouseholdProductivityLogSigmaInitial, 2); // Sikrer at forventet produktivitet er 1
             settings.HouseholdProductivityErrorSigma = 0.02;
-            settings.HouseholdNewBorn = (int)(15 * scale);
+            settings.HouseholdNewBorn = (int)(10 * scale); 
             
             settings.HouseholdPensionAge = 67 * 12;
             settings.HouseholdStartAge = 18 * 12;
 
             // Investor
-            settings.InvestorInitialInflow = (int)(17 * scale);
-            settings.InvestorProfitSensitivity = 0.05;   // 5.0....Try 30 !!!!!!            
+            settings.InvestorInitialInflow = (int)(10 * scale);
+            settings.InvestorProfitSensitivity = 0.01;   // 0.05    5.0....Try 30 !!!!!!            
 
             // Statistics
-            settings.StatisticsInitialMarketPrice = 2.0;
+            settings.StatisticsInitialMarketPrice = 1.0;  //2.0
+            settings.StatisticsInitialMarketWage = 0.15;   //1.0 
             settings.StatisticsInitialInterestRate = Math.Pow(1 + 0.05, 1.0 / 12) - 1; // 5% p.a.
 
             settings.StatisticsFirmReportSampleSize = 0.15;
@@ -115,12 +118,12 @@ namespace Dream.Models.SOE_Basic
                       
             // Time and randomseed           
             settings.StartYear = 2014;
-            settings.EndYear = 2160;
+            settings.EndYear = 2200;
             settings.PeriodsPerYear = 12;
 
             settings.StatisticsOutputPeriode = (2075 - 2014) * 12;
             settings.StatisticsGraphicsPlotInterval = 12 * 1;
-            settings.StatisticsGraphicsStartPeriod = 12*150;   // SE HER !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            settings.StatisticsGraphicsStartPeriod = 12*184;   // SE HER !!!!!!!!!!!!!!!!!!!!!!!!!!!!
             
             if(args.Length == 1)
             {
@@ -129,13 +132,13 @@ namespace Dream.Models.SOE_Basic
                 settings.ShockPeriod = (2100 - 2014) * 12;
             }
 
-            settings.SaveScenario = true;
+            //settings.SaveScenario = true;
 
             //settings.RandomSeed = 123;
             //settings.FirmNumberOfNewFirms = 1;
 
-            settings.BurnInPeriod1 = (2035 - 2014) * 12;
-            settings.BurnInPeriod2 = (2050 - 2014) * 12;
+            settings.BurnInPeriod1 = (2030 - 2014) * 12;  //35
+            settings.BurnInPeriod2 = (2035 - 2014) * 12;  //50
             settings.StatisticsWritePeriode = (2075 - 2014) * 12;
 
             // !!!!! Remember some settings are changed in Simulation after BurnIn1 !!!!!

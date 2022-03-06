@@ -25,6 +25,7 @@ namespace Dream.Models.SOE_Basic
         double _vacancies = 0;
         double _y_primo;   // Primo production
         double _y_optimal;   // Optimal productions
+        double _profit_optimal;   // Optimal productions
         double _s_primo;   // Primo sales
         double _sales;   // Actual sales
         double _potentialSales;   // Actual sales
@@ -102,6 +103,9 @@ namespace Dream.Models.SOE_Basic
 
 
                 case Event.System.Start:
+                    // If initial firm
+                    _phi0 = _random.NextPareto(_settings.FirmParetoMinPhiInitial, _settings.FirmPareto_k);
+                    _phi = _phi0;
                     break;
 
                 case Event.System.PeriodStart:
@@ -142,18 +146,25 @@ namespace Dream.Models.SOE_Basic
                             profitLimit = 0;
 
                         if (_time.Now > _settings.BurnInPeriod1)
-                            if (_l_optimal == 0 & _age > _settings.FirmStartupPeriod)
-                                CloseFirm(EStatistics.FirmCloseZeroEmployment);
+                            if (_profit_optimal <= 0 & _age > _settings.FirmStartupPeriod)
+                                if (_random.NextEvent(_settings.FirmDefaultProbabilityNegativeProfit))
+                                {
+                                    CloseFirm(EStatistics.FirmCloseZeroEmployment);
+                                    break;
+                                }
 
                         // Close firm if negative profit or zero employment
-                        if (_profit < profitLimit & _age > _settings.FirmNegativeProfitOkAge) // Restriction more and more tight
-                            if (_random.NextEvent(_settings.FirmDefaultProbabilityNegativeProfit))
-                                CloseFirm(EStatistics.FirmCloseNegativeProfit);
+                        //if (_profit < profitLimit & _age > _settings.FirmNegativeProfitOkAge) // Restriction more and more tight
+                        //    if (_random.NextEvent(_settings.FirmDefaultProbabilityNegativeProfit))
+                        //        CloseFirm(EStatistics.FirmCloseNegativeProfit);
                     }
 
                     if(_random.NextEvent(_settings.FirmDefaultProbability))
+                    {
                         CloseFirm(EStatistics.FirmCloseNatural);
-                      
+                        break;
+                    }
+
                     //Firings
                     if (_time.Now > _settings.FirmFiringsStart)
                     {
@@ -287,6 +298,7 @@ namespace Dream.Models.SOE_Basic
             {
                 _l_optimal = _settings.FirmStartupEmployment;
                 _y_optimal = 0;
+                _profit_optimal = 0;
                 return;
             }
 
@@ -306,11 +318,13 @@ namespace Dream.Models.SOE_Basic
             if (z > fi)
             {
                 _y_optimal = _phi * (z - fi);
+                _profit_optimal = _expPrice * _y_optimal - _expWage * _l_optimal;
             }
             else
             {
                 _l_optimal = 0;
                 _y_optimal = 0;
+                _profit_optimal = 0;
             }
 
         }

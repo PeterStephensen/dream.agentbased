@@ -21,6 +21,10 @@ namespace Dream.Models.SOE_Basic
         /// k-parameter in pareto productivity distribution
         /// </summary>
         public double FirmPareto_k { get; set; } = 2;
+        /// <summary>
+        /// Initial minimum productivity in pareto distribution
+        /// </summary>
+        public double FirmParetoMinPhiInitial { get; set; } = 0.5;
 
         /// <summary>
         /// Decreasing returns to scale parameter
