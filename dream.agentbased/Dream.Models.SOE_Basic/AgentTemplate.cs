@@ -8,7 +8,10 @@ using Dream.AgentClass;
 
 namespace Dream.Models.SOE_Basic
 {
-    public class AgentDummy : Agent
+    /// <summary>
+    /// used as a template for new Agents
+    /// </summary>
+    public class AgentTemplate : Agent
     {
 
         #region Private fields
@@ -19,7 +22,7 @@ namespace Dream.Models.SOE_Basic
         #endregion
 
         #region Constructor
-        public AgentDummy()
+        public AgentTemplate()
         {
             _simulation = Simulation.Instance;
             _settings = _simulation.Settings;

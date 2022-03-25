@@ -24,7 +24,6 @@ H:\CSharp\Agentbased\dream.agentbased\Dream.IO\obj\Debug\net6.0\ref\Dream.IO.dll
 H:\CSharp\Agentbased\dream.agentbased\Dream.IO\obj\Debug\net6.0\Dream.IO.pdb
 H:\CSharp\Agentbased2\dream.agentbased\Dream.IO\bin\Debug\net6.0\Dream.IO.deps.json
 H:\CSharp\Agentbased2\dream.agentbased\Dream.IO\bin\Debug\net6.0\Dream.IO.dll
-H:\CSharp\Agentbased2\dream.agentbased\Dream.IO\bin\Debug\net6.0\ref\Dream.IO.dll
 H:\CSharp\Agentbased2\dream.agentbased\Dream.IO\bin\Debug\net6.0\Dream.IO.pdb
 H:\CSharp\Agentbased2\dream.agentbased\Dream.IO\obj\Debug\net6.0\Dream.IO.csproj.AssemblyReference.cache
 H:\CSharp\Agentbased2\dream.agentbased\Dream.IO\obj\Debug\net6.0\Dream.IO.GeneratedMSBuildEditorConfig.editorconfig
@@ -46,3 +45,4 @@ P:\psp\CSharp\Agentbased2\dream.agentbased\Dream.IO\obj\Debug\net6.0\Dream.IO.cs
 P:\psp\CSharp\Agentbased2\dream.agentbased\Dream.IO\obj\Debug\net6.0\Dream.IO.dll
 P:\psp\CSharp\Agentbased2\dream.agentbased\Dream.IO\obj\Debug\net6.0\ref\Dream.IO.dll
 P:\psp\CSharp\Agentbased2\dream.agentbased\Dream.IO\obj\Debug\net6.0\Dream.IO.pdb
+H:\CSharp\Agentbased2\dream.agentbased\Dream.IO\obj\Debug\net6.0\refint\Dream.IO.dll

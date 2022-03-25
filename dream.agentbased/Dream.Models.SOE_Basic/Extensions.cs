@@ -76,6 +76,8 @@ namespace Dream.Models.SOE_Basic
                 return false;
         }
         #endregion
+
+        #region WriteLineTab()
         /// <summary>
         /// Write tab seperated list to StreamWriter
         /// </summary>
@@ -84,6 +86,7 @@ namespace Dream.Models.SOE_Basic
         {
             sw.WriteLine(String.Join('\t', o));
         }
+        #endregion
 
     }
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Diagnostics;
 //using System.Threading;
+using System.Text.Json;
 
 
 using Dream.AgentClass;
@@ -37,15 +38,18 @@ namespace Dream.Models.SOE_Basic
         double _nFirmNew = 0;
         double _expDiscountedProfits = 0;
         double _sharpeRatio = 0;
+        double _sigmaRisk = 0;
         double _expSharpeRatio = 0;
         double _yr_consumption = 0; 
         int _yr_employment = 0;
         double _totalEmployment = 0;
         double _totalSales = 0;
+        double _totalProduction = 0;
         int _scenario_id = 0;
         string _runName = "Base";
-
-
+        double _laborSupply = 0;  // Measured in productivity units
+        int _n_laborSupply = 0;   // Measured in heads
+        int _n_unemployed = 0;     // Measured in heads
         #endregion
 
         #region Constructor
@@ -59,7 +63,10 @@ namespace Dream.Models.SOE_Basic
             _marketWage = _settings.StatisticsInitialMarketWage;
             _interestRate = _settings.StatisticsInitialInterestRate;
 
-            if(_settings.LoadDatabase)
+            string sJson = JsonSerializer.Serialize(_settings);
+            File.WriteAllText(_settings.ROutputDir + "\\Settings.json", sJson);
+
+            if (_settings.LoadDatabase)
             {
                 TabFileReader file = new TabFileReader(_settings.ROutputDir + "\\db_statistics.txt");
                 file.ReadLine();
@@ -85,10 +92,7 @@ namespace Dream.Models.SOE_Basic
             {
 
                 case Event.System.Start:
-                    #region File IO
-                    OpenFiles();
-                    #endregion
-                    
+                    OpenFiles();                   
                     break;
 
                 case Event.System.PeriodStart:
@@ -138,38 +142,38 @@ namespace Dream.Models.SOE_Basic
                     // Statistics
                     double meanWage = 0;
                     double meanPrice = 0;
-                    //double n = 0;
+                    double totProfit = 0;
+                    double mean_age = 0;
+
+                    _meanValue = 0;
+                    _discountedProfits = 0;
                     _totalSales = 0;
                     _totalEmployment = 0;
-                    double totProfit = 0;
-                    _meanValue = 0;
-                    double mean_age = 0;
-                    _discountedProfits = 0;
-                    foreach(Firm f in _simulation.Firms)
+                    _totalProduction = 0;
+                    foreach (Firm f in _simulation.Firms)
                     {
                         meanWage += f.Wage * f.Employment;
                         meanPrice += f.Price * f.Sales;
                         _totalEmployment += f.Employment;
                         _totalSales += f.Sales;
-
-                        //totProfit += f.ExpectedProfit;
+                        _totalProduction += f.Production;
                         _meanValue += f.Value;
                         mean_age += f.Age;
                         _discountedProfits += f.Profit / Math.Pow(1+_interestRate, f.Age);
                     }
 
                     double m_pi = _discountedProfits /_simulation.Firms.Count;
-                    double sigma = 0;
+                    _sigmaRisk = 0;
+
                     foreach (Firm f in _simulation.Firms)
-                        sigma += Math.Pow(f.Profit / Math.Pow(1 + _interestRate, f.Age) - m_pi, 2);
-                    sigma = Math.Sqrt(sigma / _simulation.Firms.Count);
-                    _sharpeRatio = sigma>0 ? m_pi / sigma : 0;
+                        _sigmaRisk += Math.Pow(f.Profit / Math.Pow(1 + _interestRate, f.Age) - m_pi, 2);
+                    _sigmaRisk = Math.Sqrt(_sigmaRisk / _simulation.Firms.Count);
+                    _sharpeRatio = _sigmaRisk > 0 ? m_pi / _sigmaRisk : 0;
 
                     _expDiscountedProfits = 0.99 * _expDiscountedProfits + (1 - 0.99) * _discountedProfits; // Bruges ikke
                     _expSharpeRatio = _settings.StatisticsExpectedSharpeRatioSmooth * _expSharpeRatio + (1 - _settings.StatisticsExpectedSharpeRatioSmooth) * _sharpeRatio;
                     mean_age /= _simulation.Firms.Count;
                     _meanValue /= _simulation.Firms.Count;
-
                     _expProfit = totProfit / _simulation.Firms.Count;
                     
                     if(meanWage>0)
@@ -177,12 +181,10 @@ namespace Dream.Models.SOE_Basic
 
                     if (_time.Now > _settings.FirmPriceMechanismStart)
                     {
-
                         if(meanPrice > 0 & _totalSales>0)
                             _marketPrice = meanPrice / _totalSales;
 
                         _discountedProfits /= _marketPrice;
-
                     }
 
                     if((_time.Now + 1) % _settings.PeriodsPerYear == 0)
@@ -193,6 +195,21 @@ namespace Dream.Models.SOE_Basic
                         {
                             _yr_consumption += h.YearConsumption;
                             _yr_employment += h.YearEmployment;
+                        }
+                    }
+
+
+                    //----------
+                    _n_laborSupply = 0;
+                    _laborSupply = 0;
+                    _n_unemployed = 0;                    
+                    foreach(Household h in _simulation.Households)
+                    {
+                        if(h.Age < _settings.HouseholdPensionAge)
+                        {
+                            _n_laborSupply++;
+                            _laborSupply += h.Productivity;
+                            _n_unemployed += h.Unemployed ? 1 : 0;
                         }
                     }
 
@@ -262,30 +279,22 @@ namespace Dream.Models.SOE_Basic
                                     sw.WriteLine("{0}\t{1}\t{2}", h.UnemploymentDuration, h.Productivity, h.Age);
                             }
 
-                            //RunRScript(_settings.RCodeDir + "\\graphs.R");
                             RunRScript("..\\..\\..\\R\\graphs.R");
 
-
-
-
                     }
-
-                    _nFirmCloseNatural = 0;
-                    _nFirmCloseTooBig = 0;
-                    _nFirmCloseNegativeProfit = 0;
-                    _nFirmCloseZeroEmployment = 0;
-                    _nFirmNew = 0;
 
                     // Shock: Productivity shock
                     if (_time.Now == _settings.ShockPeriod)
                     {
                         if(_settings.Shock==EShock.Productivity)
-                            _macroProductivity = 0.8;
+                            _macroProductivity = 1.1;
 
                     }
 
-                    
-                    _fileMacro.WriteLineTab(_scenario_id, _runName, _time.Now, _expSharpeRatio, _macroProductivity, _marketPrice, _marketWage, _simulation.Firms.Count, _totalEmployment, _totalSales);
+                    int nFirmClosed = _nFirmCloseNatural + _nFirmCloseNegativeProfit + _nFirmCloseTooBig + _nFirmCloseZeroEmployment;
+                    _fileMacro.WriteLineTab(_scenario_id, _runName, _time.Now, _expSharpeRatio, _macroProductivity, _marketPrice, _marketWage,
+                                                _simulation.Firms.Count, _totalEmployment, _totalSales, _laborSupply, _n_laborSupply, _n_unemployed,
+                                                _totalProduction, _simulation.Households.Count, _nFirmNew, nFirmClosed, _sigmaRisk, _sharpeRatio);
                     _fileMacro.Flush();
 
                     if (_time.Now==_settings.StatisticsOutputPeriode)
@@ -296,10 +305,28 @@ namespace Dream.Models.SOE_Basic
                         }
                     }
 
+                    _nFirmCloseNatural = 0;
+                    _nFirmCloseTooBig = 0;
+                    _nFirmCloseNegativeProfit = 0;
+                    _nFirmCloseZeroEmployment = 0;
+                    _nFirmNew = 0;
                     break;
 
                 case Event.System.Stop:
                     CloseFiles();
+                    if(!_settings.SaveScenario)
+                    {
+                        Console.WriteLine("\nRunning R-scripts:");
+
+                        Console.WriteLine("-- macro.R..");
+                        RunRScript("..\\..\\..\\R\\macro.R");
+
+                        Console.WriteLine("-- macro_q.R..");
+                        RunRScript("..\\..\\..\\R\\macro_q.R");
+
+                        Console.WriteLine("-- firm_reports.R..");
+                        RunRScript("..\\..\\..\\R\\firm_reports.R");
+                    }
                     break;
 
                 default:
@@ -368,31 +395,36 @@ namespace Dream.Models.SOE_Basic
         #region OpenFiles()
         void OpenFiles()
         {
-            string path = _settings.ROutputDir + "\\data_year.txt";
-            if (File.Exists(path)) File.Delete(path);
-            using (StreamWriter sw = File.CreateText(path))
-                sw.WriteLine("Year\tn_Households\tavr_productivity\tnUnemployed\tnOptimalEmplotment\tP_star\tnEmployment\tnVacancies\tWage\tPrice\t" +
-                    "Sales\tProfitPerHousehold\tnFirms\tProfitPerFirm\tMeanAge\tMeanValue\tnFirmCloseNatural\tnFirmCloseNegativeProfit\tnFirmCloseTooBig\t" +
-                    "nFirmNew\tDiscountedProfits\tExpDiscountedProfits\tSharpeRatio\tExpSharpRatio\tLaborSupply\tYearConsumption\tYearEmployment");
-
-            path = _settings.ROutputDir + "\\file_reports.txt"; // Ret til firms !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            if (File.Exists(path)) File.Delete(path);
-            _fileFirmReport = File.CreateText(path);
-            _fileFirmReport.WriteLine("Time\tID\tProductivity\tEmployment\tProduction\tSales\tVacancies\tExpectedPrice\tExpectedWage\tPrice\tWage\tApplications" +
-                "\tQuitters\tProfit\tValue\tPotensialSales\tOptimalEmployment\tOptimalProduction\tExpectedSales");
-
-            path = _settings.ROutputDir + "\\household_reports.txt";
-            if (File.Exists(path)) File.Delete(path);
-            _fileHouseholdReport = File.CreateText(path);
-            _fileHouseholdReport.WriteLine("Time\tID\tProductivity\tAge\tConsumption\tValConsumption\tIncome");
-
-            path = _settings.ROutputDir + "\\output.txt";
-            if (!File.Exists(path))
+            if (!_settings.SaveScenario)
+            {
+                string path = _settings.ROutputDir + "\\data_year.txt";
+                if (File.Exists(path)) File.Delete(path);
                 using (StreamWriter sw = File.CreateText(path))
-                    sw.WriteLine("n_firms\tPrice\tWage\tDiscountedProfits");
+                    sw.WriteLine("Year\tn_Households\tavr_productivity\tnUnemployed\tnOptimalEmplotment\tP_star\tnEmployment\tnVacancies\tWage\tPrice\t" +
+                        "Sales\tProfitPerHousehold\tnFirms\tProfitPerFirm\tMeanAge\tMeanValue\tnFirmCloseNatural\tnFirmCloseNegativeProfit\tnFirmCloseTooBig\t" +
+                        "nFirmNew\tDiscountedProfits\tExpDiscountedProfits\tSharpeRatio\tExpSharpRatio\tLaborSupply\tYearConsumption\tYearEmployment");
+
+                path = _settings.ROutputDir + "\\file_reports.txt"; // Ret til firms !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                if (File.Exists(path)) File.Delete(path);
+                _fileFirmReport = File.CreateText(path);
+                _fileFirmReport.WriteLine("Time\tID\tProductivity\tEmployment\tProduction\tSales\tVacancies\tExpectedPrice\tExpectedWage\tPrice\tWage\tApplications" +
+                    "\tQuitters\tProfit\tValue\tPotensialSales\tOptimalEmployment\tOptimalProduction\tExpectedSales");
+
+                path = _settings.ROutputDir + "\\household_reports.txt";
+                if (File.Exists(path)) File.Delete(path);
+                _fileHouseholdReport = File.CreateText(path);
+                _fileHouseholdReport.WriteLine("Time\tID\tProductivity\tAge\tConsumption\tValConsumption\tIncome");
+
+                path = _settings.ROutputDir + "\\output.txt";
+                if (!File.Exists(path))
+                    using (StreamWriter sw = File.CreateText(path))
+                        sw.WriteLine("n_firms\tPrice\tWage\tDiscountedProfits");
+
+            }
+
+            string macroPath = _settings.ROutputDir + "\\macro.txt"; ;
 
             #region Scenario-stuff
-            string macroPath = _settings.ROutputDir + "\\macro.txt"; ;
             if (_settings.SaveScenario)
             {
                 Directory.CreateDirectory(_settings.ROutputDir + "\\Scenarios");
@@ -407,9 +439,10 @@ namespace Dream.Models.SOE_Basic
                         using (StreamReader sr = File.OpenText(scnPath))
                             _scenario_id = Int32.Parse(sr.ReadLine());
                         _scenario_id++;
+                        Console.WriteLine("Base: {0}, {1}", _scenario_id, _simulation.Seed);
 
                     }
-                    
+
                     if (File.Exists(scnPath)) File.Delete(scnPath);
                     using (StreamWriter sw = File.CreateText(scnPath))
                     {
@@ -426,16 +459,21 @@ namespace Dream.Models.SOE_Basic
                     using (StreamReader sr = File.OpenText(scnPath))
                         _scenario_id = Int32.Parse(sr.ReadLine());
 
-                    _runName = _settings.Shock.ToString();
+                    _runName = _settings.Shock.ToString();                                    
                     macroPath = _settings.ROutputDir + "\\Scenarios\\count_"  + _runName + "_" + _scenario_id.ToString() + ".txt";
+                    Console.WriteLine("{0}: {1}, {2}", _runName, _scenario_id, _simulation.Seed);
 
                 }
             }
+            #endregion
 
             if (File.Exists(macroPath)) File.Delete(macroPath);
             _fileMacro = File.CreateText(macroPath);
-            _fileMacro.WriteLine("Scenario\tRun\tTime\texpSharpeRatio\tmacroProductivity\tmarketPrice\tmarketWage\tnFirms\tEmployment\tSales");
-            #endregion
+            _fileMacro.WriteLine("Scenario\tRun\tTime\texpSharpeRatio\tmacroProductivity\tmarketPrice\t" +
+                   "marketWage\tnFirms\tEmployment\tSales\tLaborSupply\tnLaborSupply\tnUnemployed\t" +
+                   "Production\tnHouseholds\tnFirmNew\tnFirmClosed\tSigmaRisk\tSharpeRatio");
+
+           
 
         }
         #endregion
@@ -443,9 +481,12 @@ namespace Dream.Models.SOE_Basic
         #region CloseFiles()
         void CloseFiles()
         {
-            _fileFirmReport.Close();
-            _fileHouseholdReport.Close();
-            _fileMacro.Close();
+            if (!_settings.SaveScenario)
+            {
+                _fileFirmReport.Close();
+                _fileHouseholdReport.Close();
+                _fileMacro.Close();
+            }
         }
         #endregion
         #endregion

@@ -1,0 +1,5 @@
+P:\psp\CSharp\Agentbased2\dream.agentbased\obj\Debug\net5.0\dream.agentbased.csproj.AssemblyReference.cache
+P:\psp\CSharp\Agentbased2\dream.agentbased\obj\Debug\net5.0\dream.agentbased.GeneratedMSBuildEditorConfig.editorconfig
+P:\psp\CSharp\Agentbased2\dream.agentbased\obj\Debug\net5.0\dream.agentbased.AssemblyInfoInputs.cache
+P:\psp\CSharp\Agentbased2\dream.agentbased\obj\Debug\net5.0\dream.agentbased.AssemblyInfo.cs
+P:\psp\CSharp\Agentbased2\dream.agentbased\obj\Debug\net5.0\dream.agentbased.csproj.CoreCompileInputs.cache

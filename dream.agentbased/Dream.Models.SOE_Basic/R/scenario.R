@@ -10,6 +10,11 @@ if(Sys.info()['nodename'] == "VDI00316")    # Fjernskrivebord
 {
   o_dir = "C:/Users/B007566/Documents/Output"  
 }
+if(Sys.info()['nodename'] == "VDI00382")    # Fjernskrivebord for agentbased projekt
+{
+  o_dir = "C:/Users/B007566/Documents/Output"  
+}
+
 
 files = list.files(paste0(o_dir, "\\Scenarios"), full.names = T)
 
@@ -72,13 +77,13 @@ lwd = 2.0
 lo = function(x)
 {
   z = sort(x)
-  mean(z[1:3]
-  )}
+  mean(z[1:5],na.rm=TRUE)
+}
 
 up = function(x)
 {
   z = sort(x, decreasing = T)
-  mean(z[1:3])
+  mean(z[1:5],na.rm=TRUE)
 }
 
 
@@ -292,7 +297,7 @@ par(mfrow=c(2,2))
 
 for(shk in 2:n_ss)
 {
-  #shk=4
+  #shk=3
   
   dc = d %>% filter(Run==ss[shk]) 
   
@@ -332,7 +337,7 @@ for(shk in 2:n_ss)
     dplyr::summarize(mean=mean(dSales, na.rm = T), up=up(dSales), lo=lo(dSales))
 
   pplot(zz, "Sales")
-  
+
   #-----------------
 
   zz = dd %>% group_by(Time) %>%
@@ -345,7 +350,7 @@ for(shk in 2:n_ss)
     dplyr::summarize(mean=mean(dRealWage, na.rm = T), up=up(dRealWage), lo=lo(dRealWage))
   
   pplot(zz, "Real wage")
-  
+
   #-----------------
   
 }

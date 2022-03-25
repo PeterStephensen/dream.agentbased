@@ -12,7 +12,6 @@ namespace Dream.Models.SOE_Basic
 {
     public class Simulation : Agent
     {
-
         #region Static private fields
         static Simulation _instance;
         #endregion
@@ -59,18 +58,13 @@ namespace Dream.Models.SOE_Basic
                 using (StreamReader sr = File.OpenText(scnPath))
                 {
                     sr.ReadLine();                          // Read first line
-                    int seed = Int32.Parse(sr.ReadLine());  // Seed on second line
+                    _seed = Int32.Parse(sr.ReadLine());  // Seed on second line
 
-                    _random = new(seed);                    // Overwrite _random with seeded 
-                    Agent.RandomSeed = seed;
+                    _random = new(_seed);                    // Overwrite _random with seeded 
+                    Agent.RandomSeed = _seed;
 
                 }
-
-
-
-
             }
-
 
             if (_instance != null)
                 throw new Exception("Simulation object is singleton");
@@ -181,12 +175,10 @@ namespace Dream.Models.SOE_Basic
                     if (_time.Now == _settings.ShockPeriod)
                     {
                         if(_settings.Shock==EShock.LaborSupply)
-                        for (int i = 0; i < 0.1 * _households.Count; i++)
-                            _households += new Household();
+                            for (int i = 0; i < 0.1 * _households.Count; i++)
+                                _households += new Household();
 
                     }
-
-
 
                     // After burn-in-stuff    
                     if (_time.Now == _settings.BurnInPeriod1)
@@ -205,8 +197,8 @@ namespace Dream.Models.SOE_Basic
                             _nFirmNew = _settings.InvestorInitialInflow;
                         else
                         {
-                            _nFirmNew += _settings.InvestorProfitSensitivity * _statistics.PublicExpectedSharpRatio;
-                            if(_nFirmNew<0)
+                            _nFirmNew += _settings.InvestorProfitSensitivity * _statistics.PublicExpectedSharpRatio * _nFirmNew;
+                            if (_nFirmNew<0)
                                 _nFirmNew = 0;
 
                         }
@@ -218,15 +210,10 @@ namespace Dream.Models.SOE_Basic
                                 _firms += new Firm();
 
                         }
-                    }
-                   
+                    }                   
                     break;
 
                 case Event.System.Stop:
-                    base.EventProc(idEvent);
-                    //if (_log.NumberOfWarnings > 0)
-                    //    Console.WriteLine("Look in log-file. {0} warnings.", _log.NumberOfWarnings);
-                    //_log.Close();
                     base.EventProc(idEvent);
                     break;
 

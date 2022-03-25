@@ -1,0 +1,128 @@
+
+R version 4.1.3 (2022-03-10) -- "One Push-Up"
+Copyright (C) 2022 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Tidligere gemt arbejdsrum gendannet]
+
+> rm(list=ls())
+> library(dplyr)
+
+Vedhæfter pakke: 'dplyr'
+
+De følgende objekter er maskerede fra 'package:stats':
+
+    filter, lag
+
+De følgende objekter er maskerede fra 'package:base':
+
+    intersect, setdiff, setequal, union
+
+> #library(forecast)
+> 
+> hpfilter      = function(x, mu = 100) {
++   y = x
++   n <- length(y)          # number of observations
++   I <- diag(n)            # creates an identity matrix
++   D <- diff(I,lag=1,d=2)  # second order differences
++   d <- solve(I + mu * crossprod(D) , y) # solves focs
++   d
++ }
+> 
+> 
+> if(Sys.info()['nodename'] == "C1709161")    # PSP's machine
++ {
++   o_dir = "C:/test/Dream.AgentBased.MacroModel"  
++ }
+> if(Sys.info()['nodename'] == "VDI00316")    # Fjernskrivebord
++ {
++   o_dir = "C:/Users/B007566/Documents/Output"  
++ }
+> if(Sys.info()['nodename'] == "VDI00382")    # Fjernskrivebord for agentbased projekt
++ {
++   o_dir = "C:/Users/B007566/Documents/Output"  
++ }
+> 
+> 
+> d = read.delim(paste0(o_dir, "\\macro.txt"))
+> 
+> 
+> if(T)
++ {
++   yr0 = 12*(2100-2014)-1
++   d = d %>% filter(Time>yr0)
++   d$Time = d$Time - yr0 
++   d$Quater = floor(d$Time/3)
++   
++   dd = d %>% group_by(Quater) %>%
++     summarise(Sales=sum(Sales), Employment=mean(Employment), Price=mean(marketPrice), 
++               Wage=mean(marketWage), SharpeRatio=mean(SharpeRatio), nFirmClosed=sum(nFirmClosed),
++               nFirmNew=sum(nFirmNew), nFirms=mean(nFirms), nUnemployed=mean(nUnemployed),
++               nLaborSupply=mean(nLaborSupply), nHouseholds=mean(nHouseholds))
++ 
++   dd$Year = dd$Quater/4
++   
++   maxyr = max(dd$Year)
++   dd = dd[dd$Year<maxyr & dd$Year>0,]
++   
++ }
+> 
+> vert_lin = function(t)
++ {
++   for(v in seq(from=0, to=max(t), by=10))
++     abline(v=v, col="gray")
++ }
+> 
+> pplot = function(t,x, main="", s_miny=0, s_maxy=1.2)
++ {
++   plot(t, x, type="l", main=main, ylim=max(x)*c(s_miny,s_maxy), ylab="", xlab="Year")
++   abline(h=0)
++   vert_lin(t)
++   lines(t, x)
++   
++ }
+> 
+> #pplot(d$Time, d$nFirms)
+> 
+> #s = spectrum(d$Employment, log="no")
+> #x = s$freq
+> #y = s$spec
+> #plot(x,y, type="l")
+> #abline(h=0)
+> 
+> 
+> #plot(d$Time/12, d$Employment, type="l")
+> #lines(d$Time/12, hpfilter(d$Employment, mu = 900000), lty=2)
+> 
+> #hist(log(d$Employment)-hpfilter(log(d$Employment), mu = 900000), breaks = 20, xlim=c(-0.04, 0.04))
+> 
+> #library(fitdistrplus)
+> #descdist(log(d$Employment)-hpfilter(log(d$Employment)), discrete = FALSE)
+> 
+> 
+> pdf(paste0(o_dir, "\\macro_q.pdf"))
+> 
+> plot(dd$Quater/4, dd$SharpeRatio, type="l", main="Sharpe Ratio", xlab="Year", ylab="", ylim=c(-0.2, 0.2))
+> abline(h=0)
+> vert_lin(d$Quater/4)
+> 
+> pplot(dd$Quater/4, dd$marketWage*dd$Employment/(dd$marketPrice*dd$Sales), main="Wage share")
+Fejl i xy.coords(x, y, xlabel, ylabel, log) : 
+  'x' and 'y' lengths differ
+Kald: pplot -> plot -> plot.default -> xy.coords
+In addition: Advarselsbeskeder:
+1: Unknown or uninitialised column: `marketWage`. 
+2: Unknown or uninitialised column: `marketPrice`. 
+Kørsel stoppet

@@ -24,7 +24,6 @@ H:\CSharp\Agentbased\dream.agentbased\Dream.AgentClass\obj\Debug\net6.0\ref\Drea
 H:\CSharp\Agentbased\dream.agentbased\Dream.AgentClass\obj\Debug\net6.0\Dream.AgentClass.pdb
 H:\CSharp\Agentbased2\dream.agentbased\Dream.AgentClass\bin\Debug\net6.0\Dream.AgentClass.deps.json
 H:\CSharp\Agentbased2\dream.agentbased\Dream.AgentClass\bin\Debug\net6.0\Dream.AgentClass.dll
-H:\CSharp\Agentbased2\dream.agentbased\Dream.AgentClass\bin\Debug\net6.0\ref\Dream.AgentClass.dll
 H:\CSharp\Agentbased2\dream.agentbased\Dream.AgentClass\bin\Debug\net6.0\Dream.AgentClass.pdb
 H:\CSharp\Agentbased2\dream.agentbased\Dream.AgentClass\obj\Debug\net6.0\Dream.AgentClass.csproj.AssemblyReference.cache
 H:\CSharp\Agentbased2\dream.agentbased\Dream.AgentClass\obj\Debug\net6.0\Dream.AgentClass.GeneratedMSBuildEditorConfig.editorconfig
@@ -46,3 +45,4 @@ P:\psp\CSharp\Agentbased2\dream.agentbased\Dream.AgentClass\obj\Debug\net6.0\Dre
 P:\psp\CSharp\Agentbased2\dream.agentbased\Dream.AgentClass\obj\Debug\net6.0\Dream.AgentClass.dll
 P:\psp\CSharp\Agentbased2\dream.agentbased\Dream.AgentClass\obj\Debug\net6.0\ref\Dream.AgentClass.dll
 P:\psp\CSharp\Agentbased2\dream.agentbased\Dream.AgentClass\obj\Debug\net6.0\Dream.AgentClass.pdb
+H:\CSharp\Agentbased2\dream.agentbased\Dream.AgentClass\obj\Debug\net6.0\refint\Dream.AgentClass.dll

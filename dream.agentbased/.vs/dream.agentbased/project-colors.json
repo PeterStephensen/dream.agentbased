@@ -25,7 +25,12 @@
       "ProjectGuid": "a673f3b1-9e73-4e51-bd88-9f12f59c702f",
       "DisplayName": "Dream.IO",
       "ColorIndex": 3
+    },
+    "4f6ed417-7619-4484-a5fe-70148b4efa22": {
+      "ProjectGuid": "4f6ed417-7619-4484-a5fe-70148b4efa22",
+      "DisplayName": "dream.agentbased",
+      "ColorIndex": 4
     }
   },
-  "NextColorIndex": 4
+  "NextColorIndex": 5
 }

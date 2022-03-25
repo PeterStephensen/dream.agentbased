@@ -131,7 +131,7 @@ namespace Dream.Models.SOE_Basic
                     // Shock: Tsunami shock
                     if (_time.Now == _settings.ShockPeriod)
                         if(_settings.Shock==EShock.Tsunami)
-                            if (_random.NextEvent(0.2))
+                            if (_random.NextEvent(0.1))
                                 CloseFirm(EStatistics.FirmCloseNatural);
 
                     break;
@@ -249,7 +249,8 @@ namespace Dream.Models.SOE_Basic
         void Write()
         {
 
-            _statistics.StreamWriterDBFirms.WriteLineTab(ID, _age, _phi0, _expPrice, _expWage, _expQuitters, 
+            if (!_settings.SaveScenario)
+                _statistics.StreamWriterDBFirms.WriteLineTab(ID, _age, _phi0, _expPrice, _expWage, _expQuitters, 
                 _expApplications, _expPotentialSales, _expSales, _w, _p, _sales, _profit);
 
 
@@ -463,7 +464,7 @@ namespace Dream.Models.SOE_Basic
         #region ReportToStatistics()
         void ReportToStatistics()
         {
-            if (_report)
+            if (_report & !_settings.SaveScenario)
             {
                 _statistics.StreamWriterFirmReport.WriteLineTab(_year, ID, _phi, _l_primo, _y_primo, _s_primo, 
                     _v_primo, _expPrice, _expWage, _p, _w, _jobApplications, _jobQuitters, _profit, _value, _potentialSales, _l_optimal, _y_optimal, _expSales);

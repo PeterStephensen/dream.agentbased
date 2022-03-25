@@ -20,6 +20,10 @@ if(Sys.info()['nodename'] == "VDI00316")    # Fjernskrivebord
 {
   o_dir = "C:/Users/B007566/Documents/Output"  
 }
+if(Sys.info()['nodename'] == "VDI00382")    # Fjernskrivebord for agentbased projekt
+{
+  o_dir = "C:/Users/B007566/Documents/Output"  
+}
 
 
 d = read.delim(paste0(o_dir, "\\macro.txt"))
@@ -62,11 +66,23 @@ pplot = function(t,x, main="", s_miny=0, s_maxy=1.2)
 #plot(x,y, type="l")
 #abline(h=0)
 
+
+#plot(d$Time/12, d$Employment, type="l")
+#lines(d$Time/12, hpfilter(d$Employment, mu = 900000), lty=2)
+
+#hist(log(d$Employment)-hpfilter(log(d$Employment), mu = 900000), breaks = 20, xlim=c(-0.04, 0.04))
+
+#library(fitdistrplus)
+#descdist(log(d$Employment)-hpfilter(log(d$Employment)), discrete = FALSE)
+
+
 pdf(paste0(o_dir, "\\macro.pdf"))
 
 plot(d$Time/12, d$expSharpeRatio, type="l", main="Sharpe Ratio", xlab="Year", ylab="", ylim=c(-0.2, 0.2))
 abline(h=0)
 vert_lin(d$Time/12)
+
+pplot(d$Time/12, d$marketWage*d$Employment/(d$marketPrice*d$Sales), main="Wage share")
 
 #pplot(d$Time/12, d$nFirmClosed, main="New (red) and Closed firms", s_miny = 0.1, s_maxy = 1.1)
 pplot(d$Time/12, d$nFirmClosed, main="New (red) and Closed firms")
@@ -106,6 +122,9 @@ pplot(d$Time/12, d$marketPrice, main="Price")
 #pplot(d_yr$Year, d_yr$Price, main="Price (Yearly)")
 
 pplot(d$Time/12, d$marketWage, main="Wage")
+
+
+
 #pplot(d_yr$Year, d_yr$Wage, main="Wage (Yearly)")
 
 #pplot(d$Time/12, d$nHouseholds, main="Number of households (Red: In labor force)", s_miny = 0.5)

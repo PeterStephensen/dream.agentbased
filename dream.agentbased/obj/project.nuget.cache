@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "+5pk0Fr6Y1Yi+LkYYehwS/LKFSa+poTkXG6xnWmLBMjWdg5BUatoGfFSa7i0y0Cx3jMPqqRYCkBFfX4Nc0/uHA==",
+  "success": true,
+  "projectFilePath": "H:\\CSharp\\Agentbased2\\dream.agentbased\\dream.agentbased.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\B007566\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.15\\microsoft.netcore.app.host.win-x64.5.0.15.nupkg.sha512",
+    "C:\\Users\\B007566\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\5.0.0\\microsoft.aspnetcore.app.ref.5.0.0.nupkg.sha512",
+    "C:\\Users\\B007566\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\5.0.0\\microsoft.windowsdesktop.app.ref.5.0.0.nupkg.sha512",
+    "C:\\Users\\B007566\\.nuget\\packages\\microsoft.netcore.app.ref\\5.0.0\\microsoft.netcore.app.ref.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

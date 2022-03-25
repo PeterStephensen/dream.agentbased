@@ -6,11 +6,18 @@ namespace Dream.Models.SOE_Basic
     {
         static void Main(string[] args)
         {
+            RunSimulation(args, true);
 
+        }
+    
+    
+        static void RunSimulation(string[] args, bool saveScenario=false)
+        {
             Settings settings = new();
+            settings.SaveScenario = saveScenario;
 
-            double scale = 1*1.0; // Scale the model up and down
-            
+            double scale = 5 * 1.0; // Scale the model up and down
+
             //Firms
             settings.NumberOfFirms = (int)(300 * scale);
 
@@ -26,43 +33,43 @@ namespace Dream.Models.SOE_Basic
             double mark = 0.08; // SE HER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             double sens = 0.5;
 
-            settings.FirmWageMarkup = 2 * mark; 
+            settings.FirmWageMarkup = 2 * mark;
             settings.FirmWageMarkupSensitivity = sens;
-            settings.FirmWageMarkdown = 2 * mark;  
+            settings.FirmWageMarkdown = 2 * mark;
             settings.FirmWageMarkdownSensitivity = sens;
 
-            settings.FirmWageMarkupInZone = 1 * mark; 
+            settings.FirmWageMarkupInZone = 1 * mark;
             settings.FirmWageMarkupSensitivityInZone = sens;
-            settings.FirmWageMarkdownInZone = 1 * mark;  
+            settings.FirmWageMarkdownInZone = 1 * mark;
             settings.FirmWageMarkdownSensitivityInZone = sens;
 
-            settings.FirmProbabilityRecalculateWage = 0.5; 
-            settings.FirmProbabilityRecalculateWageInZone = 0.2; 
+            settings.FirmProbabilityRecalculateWage = 0.5;
+            settings.FirmProbabilityRecalculateWageInZone = 0.2;
 
             //-----
-            settings.FirmPriceMarkup = 2 * mark;  
-            settings.FirmPriceMarkupSensitivity = sens; 
+            settings.FirmPriceMarkup = 2 * mark;
+            settings.FirmPriceMarkupSensitivity = sens;
             settings.FirmPriceMarkdown = 0.5 * mark;             //Stable prices  
             settings.FirmPriceMarkdownSensitivity = 0.5 * sens;  //Stable prices 
 
-            settings.FirmPriceMarkupInZone = mark;  
-            settings.FirmPriceMarkupSensitivityInZone = sens;  
-            settings.FirmPriceMarkdownInZone = 0.25* mark;                //Stable prices  
+            settings.FirmPriceMarkupInZone = mark;
+            settings.FirmPriceMarkupSensitivityInZone = sens;
+            settings.FirmPriceMarkdownInZone = 0.25 * mark;                //Stable prices  
             settings.FirmPriceMarkdownSensitivityInZone = 0.25 * sens;    //Stable prices 
 
             settings.FirmPriceMechanismStart = 12 * 1;
-            
-            settings.FirmProbabilityRecalculatePrice = 0.5; 
-            settings.FirmProbabilityRecalculatePriceInZone = 0.2; 
+
+            settings.FirmProbabilityRecalculatePrice = 0.5;
+            settings.FirmProbabilityRecalculatePriceInZone = 0.2;
 
             //-----
             settings.FirmComfortZoneEmployment = 0.15;
             settings.FirmComfortZoneSales = 0.15;
 
             //-----
-            settings.FirmDefaultProbabilityNegativeProfit = 0.15;  // Vigtig for kriser !!!!!!!!!!!!!!!!!!
-            settings.FirmDefaultStart = 12*5;
-            settings.FirmNegativeProfitOkAge = 12*2;
+            settings.FirmDefaultProbabilityNegativeProfit = 0.5;  // Vigtig for kriser !!!!!!!!!!!!!!!!!!
+            settings.FirmDefaultStart = 12 * 5;
+            settings.FirmNegativeProfitOkAge = 12 * 2;
 
             settings.FirmExpectationSmooth = 0.4;
             settings.FirmMaxEmployment = 700;
@@ -75,32 +82,32 @@ namespace Dream.Models.SOE_Basic
             //settings.FirmProductivityGrowth = 0.02;
 
             // Households
-            settings.NumberOfHouseholdsPerFirm = 6000/300;
+            settings.NumberOfHouseholdsPerFirm = 6000 / 300;
             settings.HouseholdNumberFirmsSearchJob = 4;     // Try 20!
             settings.HouseholdNumberFirmsSearchShop = 75;    //----------------------- 
-            settings.HouseholdProbabilityQuitJob = 0.01;   
+            settings.HouseholdProbabilityQuitJob = 0.01;
             settings.HouseholdProbabilitySearchForJob = 0.01;
             settings.HouseholdProbabilitySearchForShop = 0.01;
             settings.HouseholdProductivityLogSigmaInitial = 0.6;
             settings.HouseholdProductivityLogMeanInitial = -0.5 * Math.Pow(settings.HouseholdProductivityLogSigmaInitial, 2); // Sikrer at forventet produktivitet er 1
             settings.HouseholdProductivityErrorSigma = 0.02;
-            settings.HouseholdNewBorn = (int)(10 * scale); 
-            
+            settings.HouseholdNewBorn = (int)(10 * scale);
+
             settings.HouseholdPensionAge = 67 * 12;
             settings.HouseholdStartAge = 18 * 12;
 
             // Investor
             settings.InvestorInitialInflow = (int)(10 * scale);
-            settings.InvestorProfitSensitivity = 0.01;   // 0.05    5.0....Try 30 !!!!!!            
+            settings.InvestorProfitSensitivity = 0.05;   // 0.05    5.0....Try 30 !!!!!!            
 
             // Statistics
             settings.StatisticsInitialMarketPrice = 1.0;  //2.0
             settings.StatisticsInitialMarketWage = 0.15;   //1.0 
             settings.StatisticsInitialInterestRate = Math.Pow(1 + 0.05, 1.0 / 12) - 1; // 5% p.a.
 
-            settings.StatisticsFirmReportSampleSize = 0.15;
-            settings.StatisticsHouseholdReportSampleSize = 0.02;
-            
+            settings.StatisticsFirmReportSampleSize = 0.015;
+            settings.StatisticsHouseholdReportSampleSize = 0.002;
+
             settings.StatisticsExpectedSharpeRatioSmooth = 0.7;
 
             // R-stuff
@@ -109,30 +116,37 @@ namespace Dream.Models.SOE_Basic
                 settings.ROutputDir = @"C:\test\Dream.AgentBased.MacroModel";
                 settings.RExe = @"C:\Program Files\R\R-4.0.3\bin\x64\R.exe";
             }
-            
+
             if (Environment.MachineName == "VDI00316") // Fjernskrivebord
             {
                 settings.ROutputDir = @"C:\Users\B007566\Documents\Output";
                 settings.RExe = @"C:\Users\B007566\Documents\R\R-4.1.2\bin\x64\R.exe";
             }
-                      
+
+            if (Environment.MachineName == "VDI00382") // Fjernskrivebord til Agentbased projekt
+            {
+                settings.ROutputDir = @"C:\Users\B007566\Documents\Output";
+                settings.RExe = @"C:\Users\B007566\Documents\R\R-4.1.3\bin\x64\R.exe";
+            }
+
+
             // Time and randomseed           
             settings.StartYear = 2014;
-            settings.EndYear = 2200;
+            settings.EndYear = 2160;
             settings.PeriodsPerYear = 12;
 
             settings.StatisticsOutputPeriode = (2075 - 2014) * 12;
             settings.StatisticsGraphicsPlotInterval = 12 * 1;
-            settings.StatisticsGraphicsStartPeriod = 12*184;   // SE HER !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            
-            if(args.Length == 1)
+            settings.StatisticsGraphicsStartPeriod = 12 * 184;   // SE HER !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            if (args.Length == 1)
             {
                 //settings.Shock = EShock.Tsunami;
+                //settings.IDScenario = Int32.Parse(args[0]);
                 settings.Shock = (EShock)Int32.Parse(args[0]);
                 settings.ShockPeriod = (2100 - 2014) * 12;
             }
 
-            //settings.SaveScenario = true;
 
             //settings.RandomSeed = 123;
             //settings.FirmNumberOfNewFirms = 1;
@@ -150,7 +164,7 @@ namespace Dream.Models.SOE_Basic
             //settings.LoadDatabase = true;
 
             var t0 = DateTime.Now;
-                        
+
             // Run the simulation
             new Simulation(settings, new Time(0, (1 + settings.EndYear - settings.StartYear) * settings.PeriodsPerYear - 1));
 
@@ -159,5 +173,6 @@ namespace Dream.Models.SOE_Basic
             //Console.ReadLine();
 
         }
+
     }
 }

@@ -21,7 +21,7 @@ namespace Dream.Models.SOE_Basic
         int _age;
         Firm _firmEmployment=null, _firmShop=null;
         bool _unemp = false; // Primo: unemployed? 
-        double _w; //Wage
+        double _w = 0; //Wage
         int _unempDuration = 0;
         double _productivity = 0;
         bool _initialHousehold = false;
@@ -100,11 +100,7 @@ namespace Dream.Models.SOE_Basic
                     _year = _settings.StartYear + 1.0 * _time.Now / _settings.PeriodsPerYear;
                     ReportToStatistics();
 
-                    //_unemp = _firmEmployment == null;
-                    //_w = _unemp ? 0.0 : _firmEmployment.Wage;
-                    //_unempDuration = _unemp ? _unempDuration + 1 : 0;
                     _unempDuration = _w > 0 ? 0 : _unempDuration+1;
-
 
                     if (_time.Now == 0)
                         _w = _simulation.Statistics.PublicMarketWage;
@@ -317,11 +313,10 @@ namespace Dream.Models.SOE_Basic
         #region ReportToStatistics()
         void ReportToStatistics()
         {
-            if (_report)
+            if (_report & !_settings.SaveScenario)
             {
                 
                 _statistics.StreamWriterHouseholdReport.WriteLineTab(_year, this.ID, _productivity, _age, _consumption, _vConsumption, _income);
-
                 _statistics.StreamWriterHouseholdReport.Flush();
 
             }
@@ -358,7 +353,8 @@ namespace Dream.Models.SOE_Basic
             int firmEmploymentID = _firmEmployment != null ? _firmEmployment.ID : -1;
             int firmShopID = _firmShop != null ? _firmShop.ID : -1;
 
-            _statistics.StreamWriterDBHouseholds.WriteLineTab(ID, _age, firmEmploymentID, firmShopID, _productivity);
+            if (!_settings.SaveScenario)
+                _statistics.StreamWriterDBHouseholds.WriteLineTab(ID, _age, firmEmploymentID, firmShopID, _productivity);
 
         }
         #endregion
