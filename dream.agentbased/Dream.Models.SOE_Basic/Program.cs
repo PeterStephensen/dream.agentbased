@@ -13,7 +13,7 @@ namespace Dream.Models.SOE_Basic
     
         static void RunSimulation(string[] args, bool saveScenario=false)
         {
-            //Multiple Goods
+            //Multiple Goods XXX
             Settings settings = new();
             settings.SaveScenario = saveScenario;
 
