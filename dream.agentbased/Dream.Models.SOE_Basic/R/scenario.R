@@ -24,7 +24,9 @@ for(i in 2:length(files))
   d = rbind(d, read.delim(files[i]))
 }
 
-yr0 = 12*(2100-2014)-1
+yr0 = 12*(2150-2014)-1
+#yr0 = 12*(2100-2014)-1
+
 d = d %>% filter(Time>yr0)
 d$Time = d$Time - yr0 
 
@@ -72,20 +74,40 @@ db = d %>% filter(Run=="Base")
 bcol = rgb(0.9,0.9,0.9)
 
 lcol = rgb(0.3,0.5,0.99)
-lwd = 2.0
+lwd = 1.0
+
 
 lo = function(x)
 {
   z = sort(x)
-  mean(z[1:5],na.rm=TRUE)
+  n = length(z)
+  i = floor(0.025*n)
+  d = 0.025*n - i
+  if(i==0)
+  {
+    return(d*z[1])
+  }
+  else
+  {
+    return((1-d) * z[i] + d*z[i+1])
+  }
 }
 
 up = function(x)
 {
   z = sort(x, decreasing = T)
-  mean(z[1:5],na.rm=TRUE)
+  n = length(z)
+  i = floor(0.025*n)
+  d = 0.025*n - i
+  if(i==0)
+  {
+    return(d*z[1])
+  }
+  else
+  {
+    return((1-d) * z[i] + d*z[i+1])
+  }
 }
-
 
 pplot = function(zz, sMain, ylab="Relative change", s_ylim=c(1,1), abs_ylim=c(0,0))
 {
@@ -102,7 +124,7 @@ pplot = function(zz, sMain, ylab="Relative change", s_ylim=c(1,1), abs_ylim=c(0,
   }
   
   plot(zz$Time/12, (zz$up), type="l", col=bcol, ylim=ylim, xlab="Year", cex.axis=0.8, 
-       ylab=ylab, main=paste(sMain," - ",ss[shk], "shock"), cex.main=0.8)
+       ylab=ylab, main=paste(sMain," - ",ss[shk]), cex.main=0.8)
   box(col=col)
   axis(1, col=col, col.ticks=col, cex.axis=0.8)
   axis(2, col=col, col.ticks=col, cex.axis=0.8)
@@ -129,19 +151,53 @@ pplot2 = function(t,x, main="", s_miny=0, s_maxy=1.2)
 }
 
 #----------------------------------------------------
+i=1
 pdf(paste0(o_dir, "/base.pdf"))
+par(mfrow=c(2,2))
 
 shk = 1
 #r_col = rgb(1,0.3,0.3)
 r_col = rgb(0.9,0.9,0.2)
 
 #------------------------
+d4 = db %>% filter(Scenario==ids[i])
+#i=i+1
+#plot(d4$Time/12, d4$expSharpeRatio, type="l", main="Sharpe Ratio", xlab="Year", ylab="", ylim=c(-0.1, 0.1))
+#abline(h=0)
+#vert_lin(d4$Time/12)
 
-d4 = db %>% filter(Scenario==ids[1])
-plot(d4$Time/12, d4$expSharpeRatio, type="l", main="Sharpe Ratio", xlab="Year", ylab="", ylim=c(-0.1, 0.1))
-abline(h=0)
-vert_lin(d4$Time/12)
+plot.frequency.spectrum <- function(X.k, xlimits=c(0,length(X.k))) {
+  plot.data  <- cbind(0:(length(X.k)-1), Mod(X.k))
+  
+  # TODO: why this scaling is necessary?
+  plot.data[2:length(X.k),2] <- 2*plot.data[2:length(X.k),2] 
+  
+  #plot(plot.data, t="l", lwd=2, main="", 
+  #     xlab="Frequency (Hz)", ylab="Strength", 
+  #     xlim=xlimits)
 
+  plot(plot.data, t="l", lwd=2, main="", 
+       xlab="Frequency (Hz)", ylab="Strength", 
+       xlim=xlimits, ylim=c(0,max(Mod(plot.data[,2]))))
+}
+plot.frequency.spectrum2 <- function(X.k, xlimits=c(0,length(X.k))) {
+  plot.data  <- cbind(0:(length(X.k)-1), Mod(X.k))
+  
+  # TODO: why this scaling is necessary?
+  plot.data[2:length(X.k),2] <- 2*plot.data[2:length(X.k),2] 
+  plot.data[,2] <- 1/plot.data[,2] 
+  plot.data[,1] <- plot.data[,1]/12 
+  
+  #plot(plot.data, t="l", lwd=2, main="", 
+  #     xlab="Frequency (Hz)", ylab="Strength", 
+  #     xlim=xlimits)
+  
+  plot(plot.data, t="h", lwd=2, main="")
+}
+
+z = fft(d4$SharpeRatio)
+#plot.frequency.spectrum2(z, xlimits = c(0,100*12))
+#abline(h=0)
 
 zz = db %>% group_by(Time) %>%
   dplyr::summarize(mean=mean(expSharpeRatio), up=up(expSharpeRatio), lo=lo(expSharpeRatio))
@@ -154,14 +210,14 @@ lines(d4$Time/12, d4$expSharpeRatio)
 
 #------------------------
 
-pplot2(d4$Time/12, d4$nFirms, main="Number of firms")
+#pplot2(d4$Time/12, d4$nFirms, main="Number of firms", s_miny = 0.8, s_maxy = 1.05)
 
 
 zz = db %>% group_by(Time) %>%
   dplyr::summarize(mean=mean(nFirms), up=up(nFirms), lo=lo(nFirms))
 
 pplot(zz, "Number of firms", ylab = "", s_ylim = c(0.9, 1.1))
-#lines(dd2$Time/12, dd2$nFirms, lwd=2, col=r_col)
+lines(d4$Time/12, d4$nFirms)
 #lines(dd2$Time/12, dd2$nFirms, lwd=0.5, col=rgb(0.7,0.7,0.7))
 
 #------------------------
@@ -170,7 +226,7 @@ zz = db %>% group_by(Time) %>%
   dplyr::summarize(mean=mean(Sales), up=up(Sales), lo=lo(Sales))
 
 pplot(zz, "Sales", ylab = "", s_ylim = c(0.9, 1.1))
-#lines(dd2$Time/12, dd2$Sales, lwd=2, col=r_col)
+lines(d4$Time/12, d4$Sales)
 #lines(dd2$Time/12, dd2$Sales, lwd=0.5, col=rgb(0.7,0.7,0.7))
 
 #------------------------
@@ -179,7 +235,7 @@ zz = db %>% group_by(Time) %>%
   dplyr::summarize(mean=mean(Employment), up=up(Employment), lo=lo(Employment))
 
 pplot(zz, "Employment", ylab = "", s_ylim = c(0.95, 1.05))
-#lines(dd2$Time/12, dd2$Employment, lwd=2, col=r_col)
+lines(d4$Time/12, d4$Employment)
 #lines(dd2$Time/12, dd2$Employment, lwd=0.5, col=rgb(0.7,0.7,0.7))
 
 #------------------------
@@ -188,7 +244,7 @@ zz = db %>% group_by(Time) %>%
   dplyr::summarize(mean=mean(marketWage/marketPrice), up=up(marketWage/marketPrice), lo=lo(marketWage/marketPrice))
 
 pplot(zz, "Real wage", ylab = "", s_ylim = c(0.9, 1.1))
-#lines(dd2$Time/12, dd2$marketWage / dd2$marketPrice, lwd=2, col=r_col)
+lines(d4$Time/12, d4$marketWage / d4$marketPrice)
 #lines(dd2$Time/12, dd2$marketWage / dd2$marketPrice, lwd=0.5, col=rgb(0.7,0.7,0.7))
 
 #------------------------
@@ -197,7 +253,7 @@ zz = db %>% group_by(Time) %>%
   dplyr::summarize(mean=mean(marketPrice), up=up(marketPrice), lo=lo(marketPrice))
 
 pplot(zz, "Price", ylab = "", s_ylim = c(0.9, 1.1))
-#lines(dd2$Time/12, dd2$marketPrice, lwd=2, col=r_col)
+lines(d4$Time/12, d4$marketPrice)
 #lines(dd2$Time/12, dd2$marketPrice, lwd=0.5, col=rgb(0.7,0.7,0.7))
 
 #------------------------
@@ -206,12 +262,16 @@ zz = db %>% group_by(Time) %>%
   dplyr::summarize(mean=mean(marketWage), up=up(marketWage), lo=lo(marketWage))
 
 pplot(zz, "Wage", ylab = "", s_ylim = c(0.9, 1.1))
-#lines(dd2$Time/12, dd2$marketWage, lwd=2, col=r_col)
+lines(d4$Time/12, d4$marketWage)
 #lines(dd2$Time/12, dd2$marketWage, lwd=0.5, col=rgb(0.7,0.7,0.7))
 
 #------------------------
 
 dev.off()
+
+
+
+
 
 
 #----------------------------------------------------

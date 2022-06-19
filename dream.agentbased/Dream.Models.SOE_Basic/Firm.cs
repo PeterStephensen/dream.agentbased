@@ -44,6 +44,7 @@ namespace Dream.Models.SOE_Basic
         bool _report = false;
         bool _startFromDatabase = false;
         double _year = 0;
+        double _good;
         #endregion
 
         #region Constructors
@@ -71,18 +72,24 @@ namespace Dream.Models.SOE_Basic
             _employed = employed;
 
         }
-        public Firm()
+        public Firm(double good=0)
         {
             _simulation = Simulation.Instance;
             _settings = _simulation.Settings;
             _statistics = _simulation.Statistics;
             _time = _simulation.Time;
             _random = _simulation.Random;
-
+            
             _employed = new List<Household>();
 
-            _phi0 = _random.NextPareto(_settings.FirmParetoMinPhi, _settings.FirmPareto_k);
+            //_phi0 = _random.NextPareto(_settings.FirmParetoMinPhi, _settings.FirmPareto_k);
+            double g_m = Math.Pow(1 + _settings.FirmProductivityGrowth, 1.0 / _settings.PeriodsPerYear) - 1.0;
+            _phi0 = _random.NextPareto(_settings.FirmParetoMinPhi, _settings.FirmPareto_k) * Math.Pow(1 + g_m,_time.Now); //!!!!!!!!!!!!!!!!
             _phi = _phi0;
+            
+            _good = good;
+            if (_good == 0)
+                _good = _random.NextDouble();
 
             if (_random.NextEvent(_settings.StatisticsFirmReportSampleSize))
                 _report = true;
@@ -335,12 +342,15 @@ namespace Dream.Models.SOE_Basic
         /// <summary>
         /// Selling the good: Setting price
         /// </summary>
+
+        
         void Marketing()
         {
 
             bool inZone = Math.Abs((_expSales - _y_optimal) / _y_optimal) < _settings.FirmComfortZoneSales;
-            double probRecalculate = inZone ? _settings.FirmProbabilityRecalculatePriceInZone : _settings.FirmProbabilityRecalculatePrice; 
-
+            double probRecalculate = inZone ? _settings.FirmProbabilityRecalculatePriceInZone : _settings.FirmProbabilityRecalculatePrice;
+                        
+            
             if (_random.NextEvent(probRecalculate))
             {
 
@@ -508,6 +518,10 @@ namespace Dream.Models.SOE_Basic
         {
             get { return _phi; }
         }
+        public double Good
+        {
+            get { return _good; }
+        }
         public double OptimalEmployment
         {
             get { return _l_optimal; }
@@ -565,8 +579,16 @@ namespace Dream.Models.SOE_Basic
             get { return _age; }
         }
 
+        /// <summary>
+        /// Used as placeholder in household calculations 
+        /// </summary>
+        public double Utility { get; set; } = 0;
+
         #endregion
 
+    
+        ///
+    
     }
 }
 

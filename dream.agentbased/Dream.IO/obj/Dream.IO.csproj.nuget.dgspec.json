@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "H:\\CSharp\\Agentbased2\\dream.agentbased\\Dream.IO\\Dream.IO.csproj": {}
+    "H:\\CSharp\\dream.agentbased\\dream.agentbased\\Dream.IO\\Dream.IO.csproj": {}
   },
   "projects": {
-    "H:\\CSharp\\Agentbased2\\dream.agentbased\\Dream.IO\\Dream.IO.csproj": {
+    "H:\\CSharp\\dream.agentbased\\dream.agentbased\\Dream.IO\\Dream.IO.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "H:\\CSharp\\Agentbased2\\dream.agentbased\\Dream.IO\\Dream.IO.csproj",
+        "projectUniqueName": "H:\\CSharp\\dream.agentbased\\dream.agentbased\\Dream.IO\\Dream.IO.csproj",
         "projectName": "Dream.IO",
-        "projectPath": "H:\\CSharp\\Agentbased2\\dream.agentbased\\Dream.IO\\Dream.IO.csproj",
+        "projectPath": "H:\\CSharp\\dream.agentbased\\dream.agentbased\\Dream.IO\\Dream.IO.csproj",
         "packagesPath": "C:\\Users\\B007566\\.nuget\\packages\\",
-        "outputPath": "H:\\CSharp\\Agentbased2\\dream.agentbased\\Dream.IO\\obj\\",
+        "outputPath": "H:\\CSharp\\dream.agentbased\\dream.agentbased\\Dream.IO\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

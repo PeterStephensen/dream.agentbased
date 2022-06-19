@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "mg1m5YLFNBymajwF8XRlXJEIGb0tz1QeZAu2TeHIro0nnv5xDeG+l91pojZF+Xan2SSUjeXXd4Loln8szT4bBQ==",
+  "dgSpecHash": "T4WUyvrYZOnxZnctdRXqX9eS5H4t/klbqbgcAesZuwC3kf2CEknpQJq27RmidcYMZ/ACtSPNkMY8qBzNx8+h0g==",
   "success": true,
-  "projectFilePath": "H:\\CSharp\\Agentbased2\\dream.agentbased\\Dream.Models.SOE_Basic\\Dream.Models.SOE_Basic.csproj",
+  "projectFilePath": "H:\\CSharp\\dream.agentbased\\dream.agentbased\\Dream.Models.SOE_Basic\\Dream.Models.SOE_Basic.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

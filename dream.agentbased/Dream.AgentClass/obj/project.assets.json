@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "H:\\CSharp\\Agentbased2\\dream.agentbased\\Dream.AgentClass\\Dream.AgentClass.csproj",
+      "projectUniqueName": "H:\\CSharp\\dream.agentbased\\dream.agentbased\\Dream.AgentClass\\Dream.AgentClass.csproj",
       "projectName": "Dream.AgentClass",
-      "projectPath": "H:\\CSharp\\Agentbased2\\dream.agentbased\\Dream.AgentClass\\Dream.AgentClass.csproj",
+      "projectPath": "H:\\CSharp\\dream.agentbased\\dream.agentbased\\Dream.AgentClass\\Dream.AgentClass.csproj",
       "packagesPath": "C:\\Users\\B007566\\.nuget\\packages\\",
-      "outputPath": "H:\\CSharp\\Agentbased2\\dream.agentbased\\Dream.AgentClass\\obj\\",
+      "outputPath": "H:\\CSharp\\dream.agentbased\\dream.agentbased\\Dream.AgentClass\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

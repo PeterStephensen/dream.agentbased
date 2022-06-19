@@ -2,7 +2,6 @@ H:\CSharp\dream.agentbased\dream.agentbased\Dream.Models.SOE_Basic\bin\Debug\net
 H:\CSharp\dream.agentbased\dream.agentbased\Dream.Models.SOE_Basic\bin\Debug\net6.0\Dream.Models.SOE_Basic.deps.json
 H:\CSharp\dream.agentbased\dream.agentbased\Dream.Models.SOE_Basic\bin\Debug\net6.0\Dream.Models.SOE_Basic.runtimeconfig.json
 H:\CSharp\dream.agentbased\dream.agentbased\Dream.Models.SOE_Basic\bin\Debug\net6.0\Dream.Models.SOE_Basic.dll
-H:\CSharp\dream.agentbased\dream.agentbased\Dream.Models.SOE_Basic\bin\Debug\net6.0\ref\Dream.Models.SOE_Basic.dll
 H:\CSharp\dream.agentbased\dream.agentbased\Dream.Models.SOE_Basic\bin\Debug\net6.0\Dream.Models.SOE_Basic.pdb
 H:\CSharp\dream.agentbased\dream.agentbased\Dream.Models.SOE_Basic\bin\Debug\net6.0\Dream.AgentClass.dll
 H:\CSharp\dream.agentbased\dream.agentbased\Dream.Models.SOE_Basic\bin\Debug\net6.0\Dream.AgentClass.pdb
@@ -78,3 +77,4 @@ P:\psp\CSharp\Agentbased2\dream.agentbased\Dream.Models.SOE_Basic\obj\Debug\net6
 P:\psp\CSharp\Agentbased2\dream.agentbased\Dream.Models.SOE_Basic\obj\Debug\net6.0\Dream.Models.SOE_Basic.pdb
 P:\psp\CSharp\Agentbased2\dream.agentbased\Dream.Models.SOE_Basic\obj\Debug\net6.0\Dream.Models.SOE_Basic.genruntimeconfig.cache
 H:\CSharp\Agentbased2\dream.agentbased\Dream.Models.SOE_Basic\obj\Debug\net6.0\refint\Dream.Models.SOE_Basic.dll
+H:\CSharp\dream.agentbased\dream.agentbased\Dream.Models.SOE_Basic\obj\Debug\net6.0\refint\Dream.Models.SOE_Basic.dll

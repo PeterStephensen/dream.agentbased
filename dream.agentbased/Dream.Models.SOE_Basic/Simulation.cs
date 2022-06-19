@@ -68,13 +68,12 @@ namespace Dream.Models.SOE_Basic
 
             if (_instance != null)
                 throw new Exception("Simulation object is singleton");
-
             
             _instance = this;
 
             _statistics = new Statistics();
-            _publicSector = new PublicSector();
-            _forecaster = new Forecaster();
+            _publicSector = new PublicSector(); // Not used
+            _forecaster = new Forecaster();     // Not used
             _households = new Agents<Household>();
             _firms = new Agents<Firm>();
             _tools = new Agents<Agent>();
@@ -183,7 +182,8 @@ namespace Dream.Models.SOE_Basic
                     // After burn-in-stuff    
                     if (_time.Now == _settings.BurnInPeriod1)
                     {
-                        _settings.FirmDefaultProbability = 1.0 / (40 * 12);  // Expectet default age: 40 years
+                        //_settings.FirmDefaultProbability = 1.0 / (40 * 12);  // Expectet default age: 40 years
+                        _settings.FirmDefaultProbability = 0; //!!!!!!!!!!!!!!!!!!!!
                         _settings.FirmStartNewFirms = true;
                         _settings.FirmStartupPeriod = 6;
                         _settings.FirmStartupEmployment = 10;  //15

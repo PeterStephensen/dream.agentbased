@@ -78,7 +78,6 @@ namespace Dream.Models.SOE_Basic
 
                 file.Close();
 
-
             }
 
         }
@@ -150,8 +149,21 @@ namespace Dream.Models.SOE_Basic
                     _totalSales = 0;
                     _totalEmployment = 0;
                     _totalProduction = 0;
+                    List<double> wages = new();
+                    List<double> prices = new();
+
+                    foreach (Household h in _simulation.Households)
+                    {
+                        if(h.FirmEmployment!=null)
+                            wages.Add(h.FirmEmployment.Wage);
+                        if (h.FirmShop != null)
+                            prices.Add(h.FirmShop.Price);
+                    }
+
                     foreach (Firm f in _simulation.Firms)
                     {
+                        //wages.Add(f.Wage);
+                        //prices.Add(f.Price);
                         meanWage += f.Wage * f.Employment;
                         meanPrice += f.Price * f.Sales;
                         _totalEmployment += f.Employment;
@@ -175,13 +187,21 @@ namespace Dream.Models.SOE_Basic
                     mean_age /= _simulation.Firms.Count;
                     _meanValue /= _simulation.Firms.Count;
                     _expProfit = totProfit / _simulation.Firms.Count;
-                    
-                    if(meanWage>0)
+
+                    if (meanWage > 0)
                         _marketWage = meanWage / _totalEmployment;
+
+                    // Calculate median wage
+                    //if (wages.Count > 0)
+                    //    _marketWage = wages.Median();
 
                     if (_time.Now > _settings.FirmPriceMechanismStart)
                     {
-                        if(meanPrice > 0 & _totalSales>0)
+                        // Calculate median price
+                        //if (prices.Count > 0)
+                        //    _marketPrice = prices.Median();
+
+                        if (meanPrice > 0 & _totalSales > 0)
                             _marketPrice = meanPrice / _totalSales;
 
                         _discountedProfits /= _marketPrice;
@@ -274,9 +294,12 @@ namespace Dream.Models.SOE_Basic
 
                             using (StreamWriter sw = File.CreateText(_settings.ROutputDir + "\\data_households.txt"))
                             {
-                                sw.WriteLine("UnemplDuration\tProductivity\tAge");
-                                foreach(Household h in _simulation.Households)
-                                    sw.WriteLine("{0}\t{1}\t{2}", h.UnemploymentDuration, h.Productivity, h.Age);
+                                sw.WriteLine("UnemplDuration\tProductivity\tAge\tGood\tShopGood\tPrice\tWage");
+                                foreach (Household h in _simulation.Households)
+                                {
+                                    double w = h.FirmEmployment!=null ? h.FirmEmployment.Wage : 0;
+                                    sw.WriteLineTab(h.UnemploymentDuration, h.Productivity, h.Age, h.Good, h.FirmShop.Good, h.FirmShop.Price, w);
+                                }
                             }
 
                             RunRScript("..\\..\\..\\R\\graphs.R");

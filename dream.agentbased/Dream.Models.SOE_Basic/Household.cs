@@ -33,6 +33,7 @@ namespace Dream.Models.SOE_Basic
         double _vConsumption = 0; // Value of consumption
         double _income = 0;
         double _year;
+        double _good;
         #endregion
 
         #region Constructors
@@ -45,8 +46,9 @@ namespace Dream.Models.SOE_Basic
             _random = _simulation.Random;
             _statistics = _simulation.Statistics;
             
-            _productivity = 1;
+            _productivity = 1.0;
             _age = _settings.HouseholdStartAge;
+            _good = _random.NextDouble();   
 
             if (_random.NextEvent(_settings.StatisticsHouseholdReportSampleSize))
                 _report = true;
@@ -116,7 +118,6 @@ namespace Dream.Models.SOE_Basic
 
                     _income = _w * _productivity + _simulation.Statistics.PublicProfitPerHousehold;
                     
-
                     break;
 
                 case Event.Economics.Update:
@@ -290,16 +291,35 @@ namespace Dream.Models.SOE_Basic
         #endregion
 
         #region SearchForShop()
+        void SearchForShop_NEW()
+        {
+
+            List<Firm> firms = _simulation.GetRandomFirms(_settings.HouseholdNumberFirmsSearchShop);
+
+            if (_firmShop != null)
+                _firmShop.Utility = _income / _firmShop.Price - 3.5 * Math.Abs(_good - _firmShop.Good);
+
+            foreach (Firm f in firms)
+                f.Utility = _income / f.Price - 3.5 * Math.Abs(_good - f.Good);
+                //f.Utility = _income / f.Price - 0.1 * Math.Min(Math.Abs(_good - f.Good), Math.Abs(1-_good - f.Good));
+
+            firms = firms.OrderByDescending(x => x.Utility).ToList(); // Order by price. Lowes price first
+
+            if (_firmShop == null || firms.First().Utility > _firmShop.Utility)  
+                _firmShop = firms.First();
+
+        }
         void SearchForShop()
         {
 
             List<Firm> firms = _simulation.GetRandomFirms(_settings.HouseholdNumberFirmsSearchShop);
             firms = firms.OrderBy(x => x.Price).ToList(); // Order by price. Lowes price first
 
-            if (_firmShop == null || firms.First().Price < _firmShop.Price)  
+            if (_firmShop == null || firms.First().Price < _firmShop.Price)
                 _firmShop = firms.First();
 
         }
+
         #endregion
 
         #region ProbabilityDeath()
@@ -391,6 +411,20 @@ namespace Dream.Models.SOE_Basic
         {
             get { return _yr_employment; }
         }
+
+        public Firm FirmShop
+        {
+            get { return _firmShop; }
+        }
+        public Firm FirmEmployment
+        {
+            get { return _firmEmployment; }
+        }
+        public double Good
+        {
+            get { return _good; }
+        }
+
 
         #endregion
 

@@ -1,6 +1,6 @@
 echo off
 
-for /l %%i in (1 1 1) do (
+for /l %%i in (1 1 11) do (
 	for /l %%x in (1 1 4) do (
 		echo %%i %%x
 		start ..\bin\Debug\net6.0\Dream.Models.SOE_Basic
@@ -12,7 +12,7 @@ for /l %%i in (1 1 1) do (
 		start ..\bin\Debug\net6.0\Dream.Models.SOE_Basic 3
         	ping 127.0.0.1 -n 4 > nul 
 	)
-       	ping 127.0.0.1 -n 440 > nul 
+       	ping 127.0.0.1 -n 110 > nul 
 )
 
 pause

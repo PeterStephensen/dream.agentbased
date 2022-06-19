@@ -11,6 +11,10 @@ if(Sys.info()['nodename'] == "VDI00316")    # Fjernskrivebord
 {
   o_dir = "C:/Users/B007566/Documents/Output"  
 }
+if(Sys.info()['nodename'] == "VDI00382")    # Fjernskrivebord
+{
+  o_dir = "C:/Users/B007566/Documents/Output"  
+}
 
 if(F)
 {
@@ -39,8 +43,6 @@ hpfilter      = function(x, mu = 100) {
   d
 }
 
-
-
 d = read.delim(paste0(o_dir,"/data_year.txt"))
 d_house = read.delim(paste0(o_dir,"/data_households.txt"))
 d_prod = read.delim(paste0(o_dir,"/data_firms.txt"))
@@ -49,10 +51,11 @@ d_prod = read.delim(paste0(o_dir,"/data_firms.txt"))
 y0 = 2014
 burnIn = 2035
 
-
 alpha = 0.5
 fi = 2
 k = 2.5
+
+g = (1 + 0.02)^(1/12) - 1
 
 l_bar = k * (fi/(1-alpha))^(1/alpha) /(k - (1/(1-alpha)))
 
@@ -91,12 +94,14 @@ if(yr > 2100)
   d = d %>% filter(Year>y0)
 }  
 
+corr = (1 + 0.02)^(d$Year - y0)
+
 cols=palette()
 
 n_households = last(d$n_Households)
 n_firms = n_households/l_bar
 
-
+ 
 hist(d_prod$Productivity, breaks = 50, xlab="Firm Productivity", main=paste("Year:",yr), col=cols[3])
 
 mx = max(max(d_prod$OptimalEmployment), max(d_prod$Employment))
@@ -143,14 +148,14 @@ abline(h=0)
 abline(v=burnIn, lty=2)
 
 
-mx = max(d$Wage / d$Price)
-plot(d$Year, d$Wage / d$Price, main="", xlab = "year", ylab="Wage / Price", 
+mx = max(d$Wage / d$Price / corr)
+plot(d$Year, d$Wage / d$Price / corr, main="", xlab = "year", ylab="Wage / Price", 
      type="l", xlim=c(y0,mx_yr), ylim=c(0,1.1*mx))
 abline(h=0)
 abline(v=burnIn, lty=2)
 
-mx = max(d$Sales)
-plot(d$Year, d$Sales, main="Sales", xlab = "year", ylab="sales", 
+mx = max(d$Sales / corr)
+plot(d$Year, d$Sales / corr, main="Sales", xlab = "year", ylab="sales", 
      type="l", xlim=c(y0,mx_yr), ylim=c(0,1.1*mx), cex.main=0.8)
 abline(h=0)
 abline(v=burnIn, lty=2)
@@ -180,6 +185,7 @@ abline(h=0)
 lines(d$Year, d$LaborSupply, lty=2)
 
 hist(d_house$Age/12, breaks = 100, xlab="Houshold age", main="", xlim=c(18,100), col=cols[3])
+
 
 
 #plot(d$Year, d$ProfitPerHousehold/d$Price, main="", xlab = "year", ylab="ProfitHoush / Price", 
@@ -228,7 +234,7 @@ if(yr>burnIn)
 }
 
 
-z = d$Sales / d$nEmployment
+z = d$Sales / d$nEmployment / corr
 plot(d$Year, z, main="", type="l", xlim=c(y0,mx_yr), ylim=c(0, 1.1*max(z)), ylab="Productivity", xlab="year")
 abline(h=0)
 abline(v=burnIn, lty=2)
@@ -302,7 +308,7 @@ abline(h=0)
 barplot(log(table(d_house$UnemplDuration)), xlab="UnemplDuration (months)", ylab="log(Antal)")
 
 plot(d_prod$Productivity, d_prod$Age/12, xlab="Productivity",ylab="Age (year)",
-     pch=19, cex=0.2, xlim=c(0,5))
+     pch=19, cex=0.2)
 abline(h=0)
 abline(v=0.5, lty=2)
 
@@ -348,6 +354,8 @@ par(mfrow=c(2,2))
 #abline(v=2050, lty=2)
 #ContourFunctions::multicolor.title(c("Closed:Total  ","Closed:Natural  ", "Closed:TooBig  ", "New"), 1:4, cex.main = 0.7)
 
+if(F)
+{
 if(d$Year[1]>2050 & length(d$Year)>50)
 {
   z = (length(d$Year)-50):length(d$Year)
@@ -378,6 +386,26 @@ if(d$Year[1]>2050 & length(d$Year)>50)
   plot(d$Year, d$YearEmployment, type="b", ylab="Employment per year", xlab="Year", cex=0.5, pch=20)
     
 }
+}
+
+#plot(d_house$Good, d_house$ShopGood, col=rgb(0,0,0,0.1), pch=20)
+
+#d_house$diff1 = abs(d_house$Good-d_house$ShopGood)
+#d_house$diff2 = abs(1-d_house$Good-d_house$ShopGood)
+#d_house$diff = ifelse(d_house$diff1<d_house$diff2, d_house$diff1, d_house$diff2)
+
+#hist(d_house$diff, breaks = 20)
+
+p = d$Price[nrow(d)]
+hist(d_house$Price, breaks=50, xlim=c(0.9*p, 1.1*p))
+abline(v=p, col="red", lwd=2, lty=2)
+
+w = d$Wage[nrow(d)]
+d_h2 = d_house %>% filter(Wage>0)
+hist(d_h2$Wage, breaks=50, xlim=c(0.9*w, 1.1*w))
+abline(v=w, col="red", lwd=2, lty=2)
+
+
 
 dev.off()
 
