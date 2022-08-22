@@ -143,6 +143,7 @@ namespace Dream.Models.SOE_Basic
                     double meanPrice = 0;
                     double totProfit = 0;
                     double mean_age = 0;
+                    double totVacancies = 0;
 
                     _meanValue = 0;
                     _discountedProfits = 0;
@@ -171,6 +172,7 @@ namespace Dream.Models.SOE_Basic
                         _totalProduction += f.Production;
                         _meanValue += f.Value;
                         mean_age += f.Age;
+                        totVacancies += f.Vacancies;
                         _discountedProfits += f.Profit / Math.Pow(1+_interestRate, f.Age);
                     }
 
@@ -317,7 +319,8 @@ namespace Dream.Models.SOE_Basic
                     int nFirmClosed = _nFirmCloseNatural + _nFirmCloseNegativeProfit + _nFirmCloseTooBig + _nFirmCloseZeroEmployment;
                     _fileMacro.WriteLineTab(_scenario_id, _runName, _time.Now, _expSharpeRatio, _macroProductivity, _marketPrice, _marketWage,
                                                 _simulation.Firms.Count, _totalEmployment, _totalSales, _laborSupply, _n_laborSupply, _n_unemployed,
-                                                _totalProduction, _simulation.Households.Count, _nFirmNew, nFirmClosed, _sigmaRisk, _sharpeRatio);
+                                                _totalProduction, _simulation.Households.Count, _nFirmNew, nFirmClosed, _sigmaRisk, _sharpeRatio, 
+                                                mean_age, totVacancies);
                     _fileMacro.Flush();
 
                     if (_time.Now==_settings.StatisticsOutputPeriode)
@@ -494,7 +497,7 @@ namespace Dream.Models.SOE_Basic
             _fileMacro = File.CreateText(macroPath);
             _fileMacro.WriteLine("Scenario\tRun\tTime\texpSharpeRatio\tmacroProductivity\tmarketPrice\t" +
                    "marketWage\tnFirms\tEmployment\tSales\tLaborSupply\tnLaborSupply\tnUnemployed\t" +
-                   "Production\tnHouseholds\tnFirmNew\tnFirmClosed\tSigmaRisk\tSharpeRatio");
+                   "Production\tnHouseholds\tnFirmNew\tnFirmClosed\tSigmaRisk\tSharpeRatio\tMeanAge\tVacancies");
 
            
 

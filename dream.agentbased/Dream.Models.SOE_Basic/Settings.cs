@@ -179,6 +179,7 @@ namespace Dream.Models.SOE_Basic
         /// </summary>
         public double FirmVacanciesShare { get; set; } = 0.1;
         public int FirmMinRemainingVacancies { get; set; } = 0;
+        
 
         //---------------------------------
         /// <summary>

@@ -97,6 +97,12 @@ if(yr > 2100)
   y0 = 2075
   d = d %>% filter(Year>y0)
 }  
+x1=6+36/60
+x2=5+54/60
+x3=5+15/60
+
+1-x3/x2
+
 
 corr = (1 + 0.02)^(d$Year - y0)
 
@@ -110,13 +116,12 @@ hist(d_prod$Productivity, breaks = 50, xlab="Firm Productivity", main=paste("Yea
 
 mx = max(max(d_prod$OptimalEmployment), max(d_prod$Employment))
 plot(d_prod$OptimalEmployment, d_prod$Employment, xlab="Optimal employment", ylab="Employment", 
-     log = "xy", col=cols[3], xlim=c(1,1.1*mx), ylim=c(1,1.1*mx), cex=0.5)
+     log = "xy", col=cols[3], xlim=c(1,1.1*mx), ylim=c(1,1.1*mx))
 abline(a=0,b=1, lty=2)
 
 mx = max(max(d_prod$OptimalProduction), max(d_prod$Sales))
-mn = min(min(d_prod$OptimalProduction), min(d_prod$Sales))
 plot(d_prod$OptimalProduction, d_prod$Sales, xlab="Optimal production", ylab="Sales", 
-     log = "xy", col=cols[3], xlim=c(1,1.1*mx), ylim=c(1,1.1*mx), cex=0.5)
+     log = "xy", col=cols[3], xlim=c(0.001,1.1*mx), ylim=c(0.001,1.1*mx))
 abline(a=0,b=1, lty=2)
 
 mx = max(d$nUnemployed/d$LaborSupply)
@@ -416,32 +421,6 @@ dev.off()
 
 
 #-----------------------------------------------
-
-svg(paste0(o_dir,"/graph.svg"))
-
-par(mfrow=c(2,2))
-
-mx = max(max(d_prod$OptimalEmployment), max(d_prod$Employment))
-plot(d_prod$OptimalEmployment, d_prod$Employment, xlab="Optimal employment", ylab="Employment", 
-     log = "xy", col=cols[3], xlim=c(1,1.1*mx), ylim=c(1,1.1*mx), cex=0.7)
-abline(a=0,b=1, lty=2)
-
-mx = max(max(d_prod$OptimalProduction), max(d_prod$Sales))
-mn = min(min(d_prod$OptimalProduction), min(d_prod$Sales))
-plot(d_prod$OptimalProduction, d_prod$Sales, xlab="Optimal production", ylab="Sales", 
-     log = "xy", col=cols[3], xlim=c(1,1.1*mx), ylim=c(1,1.1*mx), cex=0.7)
-abline(a=0,b=1, lty=2)
-
-plot(d_prod$Productivity, d_prod$Age/12, xlab="Productivity",ylab="Age (year)",
-     pch=19, cex=0.2, main="Firms")
-abline(h=0)
-abline(v=0.5, lty=2)
-
-dd = d_house[sample(1:nrow(d_house),1000), ]
-plot(dd$Age/12, dd$Productivity,pch=19, cex=0.1, xlab="Age (years)", 
-     ylab="Productivity", ylim=c(0,5), main="Households (sample: 1.000)")
-
-dev.off()
 
 
 

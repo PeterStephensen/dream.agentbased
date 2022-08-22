@@ -88,5 +88,26 @@ namespace Dream.Models.SOE_Basic
         }
         #endregion
 
+        #region Median()
+        /// <summary>
+        /// Returns median from double list
+        /// </summary>
+        /// <param name="list">List of doubles</param>
+        /// <returns>Median as double</returns>
+        public static double Median(this List<double> list)
+        {
+            List<double> l = list.OrderBy(x => x).ToList();
+            int count = list.Count;
+            int halfIndex = count / 2;
+            double median;
+            if (count % 2 == 0)
+                median = (l[halfIndex - 1] + l[halfIndex]) / 2;
+            else
+                median = l[halfIndex];
+
+            return median;
+        }
+        #endregion
+
     }
 }

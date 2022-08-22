@@ -18,6 +18,11 @@ if(Sys.info()['nodename'] == "VDI00382")    # Fjernskrivebord for agentbased pro
 
 d_report = read.delim(paste0(o_dir,"/file_reports.txt"))
 
+plot(d_report$Time, d_report$Productivity)
+
+dd = d_report %>% filter(Productivity>8)
+
+
 pdf(paste0(o_dir,"/firm_reports.pdf"))
 
 
@@ -52,7 +57,7 @@ for(i in 1:n)
       next
   }
   
-  if(T)
+  if(F)
   {
     if(nrow(dr)>12*5)
     {
@@ -60,6 +65,10 @@ for(i in 1:n)
     }
     
   }
+  
+  if(sum(dr$Profit / dr$Price>0)==0)
+    next
+  
   
   mx = max(max(dr$Employment), max(dr$OptimalEmployment))
   plot(dr$Time, dr$Employment, type="s", ylab="Employment", xlab="Time", main="", col=cols[3], ylim=c(0,1.1*mx))

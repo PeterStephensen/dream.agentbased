@@ -452,7 +452,7 @@ namespace Dream.Models.SOE_Basic
                 {
                     if (_expApplications < _vacancies + _expQuitters)
                     {
-                        double g = markup * PriceFunc(markupSensitivity * (_vacancies + _expQuitters - _expApplications) / _employed.Count);
+                        double g = markup * PriceFunc(markupSensitivity * (_vacancies + _expQuitters - _expApplications) / _l_optimal);// _employed.Count);
                         w_target = (1 + g) * _expWage;
                     }
                 }
@@ -460,7 +460,7 @@ namespace Dream.Models.SOE_Basic
                 {
                     if (_expApplications > _expQuitters)
                     {
-                        double g = markdown * PriceFunc(markdownSensitivity * (_expApplications - _expQuitters)/ _employed.Count);
+                        double g = markdown * PriceFunc(markdownSensitivity * (_expApplications - _expQuitters) / _l_optimal);// _employed.Count);
                         w_target = (1 - g) * _expWage;
                     }
                 }
@@ -510,7 +510,6 @@ namespace Dream.Models.SOE_Basic
             return _employed.Sum(e => e.Productivity);
         }
         #endregion
-
         #endregion
 
         #region Public proporties

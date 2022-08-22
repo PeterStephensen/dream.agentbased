@@ -15,7 +15,7 @@ namespace Dream.Models.SOE_Basic
             Settings settings = new();
             settings.SaveScenario = saveScenario;
 
-            double scale = 1 * 1.0; // Scale the model up and down
+            double scale = 1 * 1.0; //8
 
             //Firms
             settings.NumberOfFirms = (int)(300 * scale);
@@ -94,8 +94,8 @@ namespace Dream.Models.SOE_Basic
             settings.HouseholdNumberFirmsSearchJob = 4;     // Try 20!
             settings.HouseholdNumberFirmsSearchShop = 75;    //----------------------- 
             settings.HouseholdProbabilityQuitJob = 0.01;
-            settings.HouseholdProbabilitySearchForJob = 0.01;
-            settings.HouseholdProbabilitySearchForShop = 0.01;
+            settings.HouseholdProbabilitySearchForJob = 0.01;                        
+            settings.HouseholdProbabilitySearchForShop = 0.01;                          // MEGET LAV???!!!
             settings.HouseholdProductivityLogSigmaInitial = 0.6;
             settings.HouseholdProductivityLogMeanInitial = -0.5 * Math.Pow(settings.HouseholdProductivityLogSigmaInitial, 2); // Sikrer at forventet produktivitet er 1
             settings.HouseholdProductivityErrorSigma = 0.02;
@@ -106,7 +106,7 @@ namespace Dream.Models.SOE_Basic
 
             // Investor
             settings.InvestorInitialInflow = (int)(10 * scale);
-            settings.InvestorProfitSensitivity = 0.1;   // 0.05    5.0....Try 30 !!!!!!            
+            settings.InvestorProfitSensitivity = 0.15;   // 0.05    5.0....Try 30 !!!!!!            
 
             // Statistics
             settings.StatisticsInitialMarketPrice = 1.0;  //2.0
@@ -119,10 +119,15 @@ namespace Dream.Models.SOE_Basic
             settings.StatisticsExpectedSharpeRatioSmooth = 0.7;
 
             // R-stuff
-            if (Environment.MachineName == "C1709161") // PSP's maskine
+            if (Environment.MachineName == "C1709161") // PSP's gamle maskine
             {
                 settings.ROutputDir = @"C:\test\Dream.AgentBased.MacroModel";
                 settings.RExe = @"C:\Program Files\R\R-4.0.3\bin\x64\R.exe";
+            }
+            if (Environment.MachineName == "C2210098") // PSP's nye maskine
+            {
+                settings.ROutputDir = @"C:\Users\B007566\Documents\Output";
+                settings.RExe = @"C:\Program Files\R\R-4.2.0\bin\x64\R.exe";
             }
 
             if (Environment.MachineName == "VDI00316") // Fjernskrivebord
@@ -154,10 +159,10 @@ namespace Dream.Models.SOE_Basic
                 //settings.Shock = EShock.Tsunami;
                 //settings.IDScenario = Int32.Parse(args[0]);
                 settings.Shock = (EShock)Int32.Parse(args[0]);
-                settings.ShockPeriod = (2100 - 2014) * 12;
+                settings.ShockPeriod = (2150 - 2014) * 12;
             }
 
-            //settings.RandomSeed = 123;
+            //settings.RandomSeed = 123;  
             //settings.FirmNumberOfNewFirms = 1;
 
             settings.BurnInPeriod1 = (2030 - 2014) * 12;  //35
